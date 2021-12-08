@@ -148,7 +148,6 @@ const Conversation = ({navigation, route}) =>{
                 let attached = await firebase.storage().ref(`new-attaches/${name}`).put(blob, {contentType: type})
                 url = await firebase.storage().ref(`new-attaches`).child(name).getDownloadURL()
                 // console.log(url)
-                // setsendingNow(false)
                 // return false;
             }catch(e){
                 console.log('*****')
@@ -171,7 +170,6 @@ const Conversation = ({navigation, route}) =>{
 
             if(sent){
                 setmessage('')
-                setattachment(null)
                 startStream()
             }else{
                 seterror('There was an error sending your message')
@@ -233,7 +231,7 @@ const Conversation = ({navigation, route}) =>{
                         <TouchableOpacity style={{alignSelf: 'flex-end', padding: 10}} onPress={()=>setattachment(null)}><Icon name="close-outline" style={{height: 20, width: 20}} fill={'grey'}/></TouchableOpacity>
                         <Image source={{ uri: attachment.uri }} style={{height: 300, width: Dimensions.get('screen').width}} resizeMode={'contain'} />
                         </> : <Text style={{margin: 10, flexDirection: 'row', alignItems: 'center'}} status={'primary'}>Attached: {attachment.name} <TouchableOpacity onPress={()=>setattachment(null)}><Icon name="trash-outline" style={{height: 15, width: 15}} fill={'red'}/></TouchableOpacity></Text> : null }
-                        <Input accessoryLeft={AttachIcon} size={'large'} value={message} onChangeText={setmessage} placeholder={'type your reply here...'} accessoryRight={sendingNow ? LoadingIcon: SendIcon} />
+                        <Input accessoryLeft={AttachIcon} size={'large'} value={message} onChangeText={setmessage} placeholder={'type your reply here...'} accessoryRight={SendIcon} />
                     </Layout>
                 </Layout>
             </SafeAreaView>

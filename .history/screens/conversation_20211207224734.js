@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import * as Reuse from '../components/reusables'
 import {Platform } from 'react-native'
-import { Dimensions, FlatList, RefreshControl, View, ActivityIndicator } from 'react-native';
+import { Dimensions, FlatList, RefreshControl, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Icon, Input, Layout, Text } from '@ui-kitten/components';
-import { SafeAreaView, TouchableOpacity } from 'react-native';
+import { Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import DocumentPicker from 'react-native-document-picker'
 import * as API from '../api';
-import firebase from 'firebase';
-import {Image} from 'react-native-elements'
-// import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator } from 'react-native-paper';
 
 let interval
 
@@ -44,17 +42,12 @@ const Conversation = ({navigation, route}) =>{
         )
     }
 
-    const LoadingIcon = (props) => (
-        <ActivityIndicator {...props} color="green"></ActivityIndicator>
-    );
-
-
     const attach = async () => {
 
         try{
             let document = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
-                allowMultiSelection: false
+                allowMultiSelection: true
             })
 
             let attached_files = []
@@ -76,84 +69,10 @@ const Conversation = ({navigation, route}) =>{
         }
     }
 
-    // added methods
-    const getFileName = (name, path)=> {
-        if (name != null) { return name; }
-
-        if (Platform.OS === "ios") {
-            path = "~" + path.substring(path.indexOf("/Documents"));
-        }
-        return path.split("/").pop();
-    }
-
-    const getPlatformPath = ({ path, uri }) => {
-        return Platform.select({
-            android: { "value": uri },
-            ios: { "value": uri }
-        })
-    }
-
-    const getPlatformURI = (imagePath) => {
-        let imgSource = imagePath;
-        if (isNaN(imagePath)) {
-            imgSource = { uri: this.state.imagePath };
-            if (Platform.OS == 'android') {
-                imgSource.uri = "file:///" + imgSource.uri;
-            }
-        }
-        return imgSource
-    }
-
-    const uriToBlob = (uri) => {
-        return new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.onload = function() {
-            // return the blob
-            resolve(xhr.response);
-          };
-          
-          xhr.onerror = function() {
-            // something went wrong
-            reject(new Error('uriToBlob failed'));
-          };
-          // this helps us get a blob
-          xhr.responseType = 'blob';
-          xhr.open('GET', uri, true);
-          
-          xhr.send();
-        });
-      }
-
     const send = async () => {
-
-        let url, type
 
         if(message.length == 0){
             return 
-        }
-
-        setsendingNow(true)
-
-        if(attachment){
-            type = attachment.type
-
-            // adding
-            // console.log(attachment)
-            var path = getPlatformPath(attachment).value;
-            var name = getFileName(attachment.name, path);
-            console.log(name+'--'+path);
-            // return false;
-            try{
-                var blob = await uriToBlob(attachment.uri);
-                let attached = await firebase.storage().ref(`new-attaches/${name}`).put(blob, {contentType: type})
-                url = await firebase.storage().ref(`new-attaches`).child(name).getDownloadURL()
-                // console.log(url)
-                // setsendingNow(false)
-                // return false;
-            }catch(e){
-                console.log('*****')
-                console.log(e)
-            }
         }
 
         try{
@@ -163,15 +82,14 @@ const Conversation = ({navigation, route}) =>{
             let sent = API.sendMessage({
                 message: message.trim(),
                 recipient: route.params.user,
-                attachment: url,
-                file_type: type,
+                attachment: null,
+                file_type: null,
                 sender: email,
                 symptoms: []
             })
 
             if(sent){
                 setmessage('')
-                setattachment(null)
                 startStream()
             }else{
                 seterror('There was an error sending your message')
@@ -180,8 +98,6 @@ const Conversation = ({navigation, route}) =>{
         }catch(e){
             console.log('message sending failed: ', e)
         }
-
-        setsendingNow(false)
 
     }
 
@@ -224,7 +140,7 @@ const Conversation = ({navigation, route}) =>{
                         refreshing={loading}
                         showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl refreshing={loading} onRefresh={startStream} />}
-                        renderItem={({item})=><Reuse.message email={email} message={item} chat={item}/>}/>
+                        renderItem={({item})=><Reuse.message email={email} message={item}/>}/>
 
                     <Layout level={'2'} style={{bottom: 10, right: 10, left: 10, position: 'absolute'}}>
                         { attachment ?
@@ -233,7 +149,7 @@ const Conversation = ({navigation, route}) =>{
                         <TouchableOpacity style={{alignSelf: 'flex-end', padding: 10}} onPress={()=>setattachment(null)}><Icon name="close-outline" style={{height: 20, width: 20}} fill={'grey'}/></TouchableOpacity>
                         <Image source={{ uri: attachment.uri }} style={{height: 300, width: Dimensions.get('screen').width}} resizeMode={'contain'} />
                         </> : <Text style={{margin: 10, flexDirection: 'row', alignItems: 'center'}} status={'primary'}>Attached: {attachment.name} <TouchableOpacity onPress={()=>setattachment(null)}><Icon name="trash-outline" style={{height: 15, width: 15}} fill={'red'}/></TouchableOpacity></Text> : null }
-                        <Input accessoryLeft={AttachIcon} size={'large'} value={message} onChangeText={setmessage} placeholder={'type your reply here...'} accessoryRight={sendingNow ? LoadingIcon: SendIcon} />
+                        <Input accessoryLeft={AttachIcon} size={'large'} value={message} onChangeText={setmessage} placeholder={'type your reply here...'} accessoryRight={SendIcon} />
                     </Layout>
                 </Layout>
             </SafeAreaView>

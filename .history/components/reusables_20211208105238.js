@@ -110,7 +110,7 @@ export const message = ({email, message, chat})=>{
             {chat.attachment != null && !(chat.file_type.includes('image')) ? <Image source={require('../assets/imga.png')} onError={()=>{console.log('e')}} style={{width: width-150, height: 180, marginBottom: 10}} resizeMode={'cover'}/> : null }
             {(failedLoad) ? <Image source={require('../assets/failed.png')} style={{width: width-150, height: 180, marginBottom: 10}} resizeMode={'contain'}/> : null }
             <Text category={'p1'}>{chat.message}</Text>
-            <Text category={'p2'} style={{ alignSelf: chat.from.email == email ? 'flex-end' : 'flex-start' }} appearance={'hint'} >{date}</Text>
+            <Text category={'p2'} style={{ alignSelf: chat.from.email == email ? 'flex-end' : 'flex-start' }} appearance={'hint'} >{formatDistanceToNow(new Date(chat.createDate), { addSuffix: true }) }</Text>
         </Card>
     )
 

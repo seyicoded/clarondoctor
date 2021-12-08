@@ -1,0 +1,50 @@
+{
+    "sourceFile": "ios/Podfile",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 8,
+            "patches": [
+                {
+                    "date": 1638947518038,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1638948457914,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n require_relative '../node_modules/react-native/scripts/react_native_pods'\n require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'\n \n-platform :ios, '7.0'\n+platform :ios, '6.0'\n \n target 'ClarondocDoctor' do\n   config = use_native_modules!\n \n"
+                },
+                {
+                    "date": 1638949060211,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n require_relative '../node_modules/react-native/scripts/react_native_pods'\n require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'\n \n-platform :ios, '6.0'\n+platform :ios, '7.0'\n \n target 'ClarondocDoctor' do\n   config = use_native_modules!\n \n"
+                },
+                {
+                    "date": 1638949098077,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n require_relative '../node_modules/react-native/scripts/react_native_pods'\n require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'\n \n-platform :ios, '7.0'\n+platform :ios, '8.0'\n \n target 'ClarondocDoctor' do\n   config = use_native_modules!\n \n"
+                },
+                {
+                    "date": 1638949134683,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n require_relative '../node_modules/react-native/scripts/react_native_pods'\n require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'\n \n-platform :ios, '8.0'\n+platform :ios, '9.0'\n \n target 'ClarondocDoctor' do\n   config = use_native_modules!\n \n"
+                },
+                {
+                    "date": 1638949153048,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n require_relative '../node_modules/react-native/scripts/react_native_pods'\n require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'\n \n-platform :ios, '9.0'\n+platform :ios, '11.0'\n \n target 'ClarondocDoctor' do\n   config = use_native_modules!\n \n"
+                },
+                {
+                    "date": 1638951261698,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,18 +2,18 @@\n require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'\n \n platform :ios, '11.0'\n \n-target 'ClarondocDoctor' do\n+target 'Clarondoc' do\n   config = use_native_modules!\n \n   use_react_native!(\n     :path => config[:reactNativePath],\n     # to enable hermes on iOS, change `false` to `true` and then install pods\n     :hermes_enabled => false\n   )\n \n-  target 'ClarondocDoctorTests' do\n+  target 'ClarondocTests' do\n     inherit! :complete\n     # Pods for testing\n   end\n \n"
+                },
+                {
+                    "date": 1638951353178,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'\n \n platform :ios, '11.0'\n \n-target 'Clarondoc' do\n+target 'ClarondocDoctor' do\n   config = use_native_modules!\n \n   use_react_native!(\n     :path => config[:reactNativePath],\n"
+                },
+                {
+                    "date": 1638951365283,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,9 +11,9 @@\n     # to enable hermes on iOS, change `false` to `true` and then install pods\n     :hermes_enabled => false\n   )\n \n-  target 'ClarondocTests' do\n+  target 'ClarondocDoctorTests' do\n     inherit! :complete\n     # Pods for testing\n   end\n \n"
+                }
+            ],
+            "date": 1638947518038,
+            "name": "Commit-0",
+            "content": "require_relative '../node_modules/react-native/scripts/react_native_pods'\nrequire_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'\n\nplatform :ios, '7.0'\n\ntarget 'ClarondocDoctor' do\n  config = use_native_modules!\n\n  use_react_native!(\n    :path => config[:reactNativePath],\n    # to enable hermes on iOS, change `false` to `true` and then install pods\n    :hermes_enabled => false\n  )\n\n  target 'ClarondocDoctorTests' do\n    inherit! :complete\n    # Pods for testing\n  end\n\n  # Enables Flipper.\n  #\n  # Note that if you have use_frameworks! enabled, Flipper will not work and\n  # you should disable the next line.\n  use_flipper!()\n\n  post_install do |installer|\n    react_native_post_install(installer)\n  end\nend\n"
+        }
+    ]
+}

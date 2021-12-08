@@ -1,11 +1,8 @@
 import React, {useState} from 'react';
 import * as API from '../api'
-import { StyleSheet, View, Dimensions, Linking, Alert } from 'react-native'
-import { TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { format, formatDistance, formatRelative, subDays, isBefore } from 'date-fns'
 import { Button, Icon, Input, Layout, Card, Text, Modal, Avatar, Divider } from '@ui-kitten/components';
-import {Image} from 'react-native-elements'
-import Clipboard from '@react-native-clipboard/clipboard';
 
 const BackIcon = (props) => (
     <Icon {...props} name='arrow-ios-back-outline'/>
@@ -60,58 +57,15 @@ export const chat = ({email, message, nav})=>{
 
 }
 
-export const message = ({email, message, chat})=>{
-    const [failedLoad, setfailedLoad] = useState(false);
+export const message = ({email, message})=>{
+    
     let date = formatRelative(new Date(message.createDate), new Date())
 
     return (
-        // <Layout level={message.from.email == email ? '4' : '3'} style={{ width: '80%', borderRadius: 15, alignSelf: message.from.email == email ? 'flex-end' : 'flex-start', borderBottomRightRadius: message.from.email == email ? 0 : 15, borderBottomLeftRadius: message.from.email == email ? 15 : 0, padding: 10, marginHorizontal: 10, marginVertical: 5}}>
-        //     <Text>{message.message}</Text>
-        //     <Text style={{alignSelf: 'flex-end', fontWeight: '300'}} appearance={'hint'} category={'c2'}>{date}</Text>
-        // </Layout>
-
-        <Card onPress={()=>{
-            console.log('clicked');
-            try{
-                if(chat.attachment == null){
-                    Alert.alert("Opening Attachment", "about opening a third party app to process attachments", [
-                        {
-                          text: 'Cancel',
-                          onPress: () => console.log('Cancel Pressed'),
-                          style: 'cancel'
-                        },
-                        { text: 'Only Copy Text', onPress: () => Clipboard.setString(chat.message) }
-                      ]);
-                }else{
-                    Alert.alert("Opening Attachment", "about opening a third party app to process attachment.", [
-                        {
-                          text: 'Cancel',
-                          onPress: () => console.log('Cancel Pressed'),
-                          style: 'cancel'
-                        },
-                        { text: 'Proceed To Attachment', onPress: () => Linking.openURL(chat.attachment) },
-                        { text: 'Only Copy Text', onPress: () => Clipboard.setString(chat.message) }
-                      ]);
-                }
-                
-            }catch(e){}
-
-
-            chat.attachment != null && chat.file_type.includes('image') ?
-            <View style={{flex: 1}}>
-                <Image onError={()=>{console.log('e')}} PlaceholderContent={()=><ActivityIndicator size="large"/>} source={{uri: chat.attachment}} resizeMode={'contain'}/>
-            </View>
-            : null
-        }} style={ chat.from.email == email ? style.bubble_right : style.bubble_left}>
-            {!(failedLoad) && chat.attachment != null && chat.file_type.includes('image') ? <Image source={{uri: chat.attachment}} onError={(e)=>{
-                
-                setfailedLoad(true)
-            }} PlaceholderContent={()=><ActivityIndicator size="large"/>}  style={{width: width-150, height: 180, marginBottom: 10}} resizeMode={'cover'}/> : null }
-            {chat.attachment != null && !(chat.file_type.includes('image')) ? <Image source={require('../assets/imga.png')} onError={()=>{console.log('e')}} style={{width: width-150, height: 180, marginBottom: 10}} resizeMode={'cover'}/> : null }
-            {(failedLoad) ? <Image source={require('../assets/failed.png')} style={{width: width-150, height: 180, marginBottom: 10}} resizeMode={'contain'}/> : null }
-            <Text category={'p1'}>{chat.message}</Text>
-            <Text category={'p2'} style={{ alignSelf: chat.from.email == email ? 'flex-end' : 'flex-start' }} appearance={'hint'} >{date}</Text>
-        </Card>
+        <Layout level={message.from.email == email ? '4' : '3'} style={{ width: '80%', borderRadius: 15, alignSelf: message.from.email == email ? 'flex-end' : 'flex-start', borderBottomRightRadius: message.from.email == email ? 0 : 15, borderBottomLeftRadius: message.from.email == email ? 15 : 0, padding: 10, marginHorizontal: 10, marginVertical: 5}}>
+            <Text>{message.message}</Text>
+            <Text style={{alignSelf: 'flex-end', fontWeight: '300'}} appearance={'hint'} category={'c2'}>{date}</Text>
+        </Layout>
     )
 
 }
@@ -185,44 +139,3 @@ export const call = ({request, nav, respond}) => {
         </Layout>
     )
 }
-
-const width = Dimensions.get('screen').width
-
-const style = StyleSheet.create({
-    menu_card: {
-        marginVertical: 15,
-        marginHorizontal: 10,
-        width: 180,
-        height: 180,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    doctor_card: {
-        marginVertical: 15,
-        marginHorizontal: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        // paddingVertical: 15
-    },
-    bubble_right: {
-        width: width-100,
-        alignSelf: 'flex-end',
-        marginHorizontal: 15,
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 0,
-        borderTopRightRadius: 25,
-        borderTopLeftRadius: 25,
-        marginVertical: 10,
-        backgroundColor: '#f2f2f2'
-    },
-    bubble_left: {
-        width: width-100,
-        alignSelf: 'flex-start',
-        marginHorizontal: 15,
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 25,
-        borderTopRightRadius: 25,
-        borderTopLeftRadius: 25,
-        marginVertical: 10
-    }
-})

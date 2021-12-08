@@ -1,0 +1,18 @@
+{
+    "sourceFile": "index.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1638955298070,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1638955298069,
+            "name": "Commit-0",
+            "content": "/**\n * @format\n */\n\nimport {AppRegistry} from 'react-native';\nimport App from './App';\nimport {name as appName} from './app.json';\nimport RNCallKeep from 'react-native-callkeep';\nimport messaging from '@react-native-firebase/messaging';\n\n// Register background handler\nmessaging().setBackgroundMessageHandler(async message => {\n    console.log('Message handled in the background!', message);\n    if(message.data.hasOwnProperty('call')){\n        try{\n            console.log('notification: ', message.data.call)\n            let calls = await RNCallKeep.getCalls()\n            if(calls.length == 0){\n                RNCallKeep.displayIncomingCall(call_id, '0546330929', localizedCallerName = message.data.call.name, handleType = 'number')\n            }\n            return;\n        }catch(e){\n            console.log('display incoming call error: ', e)\n        }\n    }\n});\n\nAppRegistry.registerComponent(appName, () => App);\n"
+        }
+    ]
+}

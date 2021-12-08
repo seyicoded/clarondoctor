@@ -148,7 +148,6 @@ const Conversation = ({navigation, route}) =>{
                 let attached = await firebase.storage().ref(`new-attaches/${name}`).put(blob, {contentType: type})
                 url = await firebase.storage().ref(`new-attaches`).child(name).getDownloadURL()
                 // console.log(url)
-                // setsendingNow(false)
                 // return false;
             }catch(e){
                 console.log('*****')
@@ -171,7 +170,6 @@ const Conversation = ({navigation, route}) =>{
 
             if(sent){
                 setmessage('')
-                setattachment(null)
                 startStream()
             }else{
                 seterror('There was an error sending your message')

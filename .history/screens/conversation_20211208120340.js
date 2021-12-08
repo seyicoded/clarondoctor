@@ -147,9 +147,9 @@ const Conversation = ({navigation, route}) =>{
                 var blob = await uriToBlob(attachment.uri);
                 let attached = await firebase.storage().ref(`new-attaches/${name}`).put(blob, {contentType: type})
                 url = await firebase.storage().ref(`new-attaches`).child(name).getDownloadURL()
-                // console.log(url)
-                // setsendingNow(false)
-                // return false;
+                console.log(url)
+                setsendingNow(false)
+                return false;
             }catch(e){
                 console.log('*****')
                 console.log(e)
