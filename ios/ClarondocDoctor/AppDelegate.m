@@ -3,10 +3,6 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <Firebase.h>
-#import "RNCallKeep.h"
-#import <PushKit/PushKit.h>
-#import "RNVoipPushNotificationManager.h"
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -39,12 +35,6 @@ static void InitializeFlipper(UIApplication *application) {
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"ClarondocDoctor"
                                             initialProperties:nil];
-  
-  if ([FIRApp defaultApp] == nil) {
-      [FIRApp configure];
-  }
-  
-  [RNVoipPushNotificationManager voipRegistration];
 
   if (@available(iOS 13.0, *)) {
       rootView.backgroundColor = [UIColor systemBackgroundColor];
@@ -58,60 +48,6 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
-}
-
-
-// --- Handle updated push credentials
-- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type {
-  // Register VoIP push token (a property of PKPushCredentials) with server
-  [RNVoipPushNotificationManager didUpdatePushCredentials:credentials forType:(NSString *)type];
-}
-
-- (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
-{
-  // --- The system calls this method when a previously provided push token is no longer valid for use. No action is necessary on your part to reregister the push type. Instead, use this method to notify your server not to send push notifications using the matching push token.
-}
-
-// --- Handle incoming pushes
-- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion {
-  
-  // --- Retrieve information from your voip push payload
-  NSString *uuid = payload.dictionaryPayload[@"uuid"];
-  NSString *callerName = [NSString stringWithFormat:@"%@ (Connecting...)", payload.dictionaryPayload[@"callerName"]];
-  NSString *handle = payload.dictionaryPayload[@"handle"];
-  
-  // This is for notifications that are sent specifically for receiver to end callkeep
-  int isReject = [payload.dictionaryPayload[@"isReject"] isEqual:@"YES"] ? YES : NO;
-  if (isReject) {
-    completion();
-    return [RNCallKeep endCallWithUUID: uuid reason:YES];
-  }
-
-  // --- this is optional, only required if you want to call `completion()` on the js side
-  [RNVoipPushNotificationManager addCompletionHandler:uuid completionHandler:completion];
-
-  // --- Process the received push
-  [RNVoipPushNotificationManager didReceiveIncomingPushWithPayload:payload forType:(NSString *)type];
-  
-  int hasVideo = [payload.dictionaryPayload[@"hasVideo"] isEqual:@"YES"] ? YES : NO;
-
-  // --- You should make sure to report to callkit BEFORE execute `completion()`
-  [RNCallKeep reportNewIncomingCall: uuid
-                               handle: handle
-                           handleType: @"generic"
-                             hasVideo: hasVideo
-                  localizedCallerName: callerName
-                      supportsHolding: YES
-                         supportsDTMF: YES
-                     supportsGrouping: YES
-                   supportsUngrouping: YES
-                          fromPushKit: YES
-                              payload: payload.dictionaryPayload
-                withCompletionHandler: completion];
-  
-  // --- You don't need to call it if you stored `completion()` and will call it on the js side.
-  completion();
-
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
