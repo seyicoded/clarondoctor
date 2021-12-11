@@ -1,0 +1,18 @@
+{
+    "sourceFile": "android/app/src/main/AndroidManifest.xml",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1639225678706,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1639225678705,
+            "name": "Commit-0",
+            "content": "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    package=\"com.clarondocdoctor\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n    <uses-permission android:name=\"android.permission.BIND_TELECOM_CONNECTION_SERVICE\"/>\n    <uses-permission android:name=\"android.permission.FOREGROUND_SERVICE\" />\n    <uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />\n    <uses-permission android:name=\"android.permission.CALL_PHONE\" />\n\n    <application\n      android:name=\".MainApplication\"\n      android:label=\"@string/app_name\"\n      android:icon=\"@mipmap/ic_launcher\"\n      android:roundIcon=\"@mipmap/ic_launcher_round\"\n      android:allowBackup=\"false\"\n      android:theme=\"@style/AppTheme\">\n\n        <service android:name=\"io.wazo.callkeep.VoiceConnectionService\"\n            android:label=\"Wazo\"\n            android:permission=\"android.permission.BIND_TELECOM_CONNECTION_SERVICE\"\n            android:foregroundServiceType=\"phoneCall\"\n        >\n            <intent-filter>\n                <action android:name=\"android.telecom.ConnectionService\" />\n            </intent-filter>\n        </service>\n      <activity\n        android:name=\".MainActivity\"\n        android:label=\"@string/app_name\"\n        android:configChanges=\"keyboard|keyboardHidden|orientation|screenSize|uiMode\"\n        android:launchMode=\"singleTask\"\n        android:windowSoftInputMode=\"adjustResize\">\n        <intent-filter>\n            <action android:name=\"android.intent.action.MAIN\" />\n            <category android:name=\"android.intent.category.LAUNCHER\" />\n        </intent-filter>\n      </activity>\n    </application>\n</manifest>\n"
+        }
+    ]
+}

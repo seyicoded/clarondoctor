@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 28,
+            "activePatchIndex": 29,
             "patches": [
                 {
                     "date": 1639062252106,
@@ -120,6 +120,10 @@
                 {
                     "date": 1639070014032,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -53,8 +53,56 @@\n     })()\n \n   }, [])\n \n+  // added methods\n+  const getFileName = (name, path)=> {\n+    if (name != null) { return name; }\n+\n+    if (Platform.OS === \"ios\") {\n+        path = \"~\" + path.substring(path.indexOf(\"/Documents\"));\n+    }\n+    return path.split(\"/\").pop();\n+}\n+\n+const getPlatformPath = ({ path, uri }) => {\n+    return Platform.select({\n+        android: { \"value\": uri },\n+        ios: { \"value\": uri }\n+    })\n+}\n+\n+const getPlatformURI = (imagePath) => {\n+    let imgSource = imagePath;\n+    if (isNaN(imagePath)) {\n+        imgSource = { uri: this.state.imagePath };\n+        if (Platform.OS == 'android') {\n+            imgSource.uri = \"file:///\" + imgSource.uri;\n+        }\n+    }\n+    return imgSource\n+}\n+\n+const uriToBlob = (uri) => {\n+    return new Promise((resolve, reject) => {\n+      const xhr = new XMLHttpRequest();\n+      xhr.onload = function() {\n+        // return the blob\n+        resolve(xhr.response);\n+      };\n+      \n+      xhr.onerror = function() {\n+        // something went wrong\n+        reject(new Error('uriToBlob failed'));\n+      };\n+      // this helps us get a blob\n+      xhr.responseType = 'blob';\n+      xhr.open('GET', uri, true);\n+      \n+      xhr.send();\n+    });\n+  }\n+\n   const pickImage = async()=>{\n     // let result = await ImagePicker.launchImageLibraryAsync({\n       setimgloading(true)\n     \n"
+                },
+                {
+                    "date": 1639264148496,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -113,8 +113,13 @@\n     })\n \n       if (!result.cancelled) {\n         result = (result[0]);\n+        if(result.size/1024 > 500){\n+            seterror(`${attached.name} cannot be attached. Exceed the maximum upload size (500KB).`)\n+            return false\n+        }\n+\n         var path = getPlatformPath(result).value;\n         var name = getFileName(result.name, path);\n         var blob = await uriToBlob(result.uri);\n         let type = result.type;\n"
                 }
             ],
             "date": 1639062252106,

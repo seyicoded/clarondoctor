@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 5,
+            "activePatchIndex": 12,
             "patches": [
                 {
                     "date": 1638959530323,
@@ -28,6 +28,34 @@
                 {
                     "date": 1639067040402,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n import Account from './screens/account';\n import firebase from 'firebase'\n \n // AsyncStorage.getAllKeys();\n-AsyncStorage.clear();\n+// AsyncStorage.clear();\n \n firebase.apps.length == 0 ? firebase.initializeApp({\n   apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n   authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n"
+                },
+                {
+                    "date": 1639171246385,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n import React, {useEffect} from 'react';\n+import {ActivityIndicator, View} from 'react-native';\n import * as eva from '@eva-design/eva';\n import { EvaIconsPack } from '@ui-kitten/eva-icons';\n import AsyncStorage from '@react-native-async-storage/async-storage';\n import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';\n@@ -139,9 +140,11 @@\n   }, [])\n \n   if(loading){\n     return (\n-      <></>\n+      <View style={{justifyContent: 'center', alignItems: 'center'}}>\n+        <ActivityIndicator color=\"green\" />\n+      </View>\n     )\n   }else{\n     return(\n       <>\n"
+                },
+                {
+                    "date": 1639171323598,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -140,9 +140,9 @@\n   }, [])\n \n   if(loading){\n     return (\n-      <View style={{justifyContent: 'center', alignItems: 'center'}}>\n+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>\n         <ActivityIndicator color=\"green\" />\n       </View>\n     )\n   }else{\n"
+                },
+                {
+                    "date": 1639171447757,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -119,12 +119,12 @@\n   };\n \n   useEffect(() => {\n     (async ()=>{\n-      await registerForPushNotificationsAsync()\n+      // await registerForPushNotificationsAsync()\n \n       try{\n-        await API.getApiKey()\n+        // await API.getApiKey()\n       }catch(e){\n         console.log('api key fetch failed: ', e)\n       }\n \n"
+                },
+                {
+                    "date": 1639171476151,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -122,9 +122,9 @@\n     (async ()=>{\n       // await registerForPushNotificationsAsync()\n \n       try{\n-        // await API.getApiKey()\n+        await API.getApiKey()\n       }catch(e){\n         console.log('api key fetch failed: ', e)\n       }\n \n"
+                },
+                {
+                    "date": 1639171518479,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -118,8 +118,11 @@\n     }\n   };\n \n   useEffect(() => {\n+\n+    registerForPushNotificationsAsync()\n+    \n     (async ()=>{\n       // await registerForPushNotificationsAsync()\n \n       try{\n"
+                },
+                {
+                    "date": 1639171725911,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -119,19 +119,22 @@\n   };\n \n   useEffect(() => {\n \n-    registerForPushNotificationsAsync()\n-    \n+    // registerForPushNotificationsAsync()\n+\n     (async ()=>{\n-      // await registerForPushNotificationsAsync()\n-\n+      \n       try{\n         await API.getApiKey()\n       }catch(e){\n         console.log('api key fetch failed: ', e)\n       }\n \n+      setloading(false)\n+\n+      await registerForPushNotificationsAsync()\n+\n       let email = await AsyncStorage.getItem('_email')\n \n       if(email == null){\n         setlogged(false)\n"
+                },
+                {
+                    "date": 1639172001924,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -122,27 +122,25 @@\n \n     // registerForPushNotificationsAsync()\n \n     (async ()=>{\n-      \n+\n       try{\n         await API.getApiKey()\n       }catch(e){\n         console.log('api key fetch failed: ', e)\n       }\n \n-      setloading(false)\n-\n-      await registerForPushNotificationsAsync()\n-\n       let email = await AsyncStorage.getItem('_email')\n \n       if(email == null){\n         setlogged(false)\n       }else{\n         setlogged(true)\n       }\n       setloading(false)\n+      await registerForPushNotificationsAsync()\n+      \n     })()\n   }, [])\n \n   if(loading){\n"
                 }
             ],
             "date": 1638959530323,
