@@ -1,0 +1,38 @@
+{
+    "sourceFile": "screens/notifications.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1639410169714,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1639410758589,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,19 +6,22 @@\n \n const Notifications = ({navigation}) =>{\n   \n   const [notifications, setnotifications] = useState([])\n+  const [loading, setloading] = useState(true)\n \n   const loadNotifications = async ()=>{\n     try{\n-\n+      setloading(true)\n       let data = await API.getNotifications()\n       setnotifications(data)\n       console.log(data)\n \n     }catch(e){\n \n     }\n+\n+    setloading(false)\n   }\n \n   useEffect(() => {\n     (()=>{\n"
+                },
+                {
+                    "date": 1639411019045,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import React, { useEffect, useState } from 'react';\n-import { FlatList, SafeAreaView } from 'react-native';\n+import { FlatList, SafeAreaView, ActivityIndicator } from 'react-native';\n import * as Reuse from '../components/reusables'\n import * as API from '../api';\n import { Icon, Layout, Text } from '@ui-kitten/components';\n \n@@ -34,8 +34,15 @@\n       <SafeAreaView style={{flex: 1}}>\n         <Layout style={{ flex: 1 }}>\n           <Reuse.header nav={navigation} title={'Notications'}/>\n \n+          {loading ? \n+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>\n+              <ActivityIndicator color=\"green\" />\n+            </View>\n+          :<></>\n+          }\n+\n           { notifications.length > 0 ?\n           <FlatList data={notifications} keyExtractor={item=>item.id}\n             renderItem={({item})=><Reuse.notification notification={item} />}\n             /> : \n"
+                },
+                {
+                    "date": 1639411032560,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import React, { useEffect, useState } from 'react';\n-import { FlatList, SafeAreaView, ActivityIndicator } from 'react-native';\n+import { View, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';\n import * as Reuse from '../components/reusables'\n import * as API from '../api';\n import { Icon, Layout, Text } from '@ui-kitten/components';\n \n"
+                },
+                {
+                    "date": 1639411156698,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,18 +38,20 @@\n           {loading ? \n             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>\n               <ActivityIndicator color=\"green\" />\n             </View>\n-          :<></>\n+          :<View style={{flex: 1}}>\n+            { notifications.length > 0 ?\n+              <FlatList data={notifications} keyExtractor={item=>item.id}\n+                renderItem={({item})=><Reuse.notification notification={item} />}\n+                /> : \n+              <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>\n+                <Text appearance={'hint'} category={'h5'}>No notifications.</Text>\n+              </Layout> }\n+          </View>\n           }\n \n-          { notifications.length > 0 ?\n-          <FlatList data={notifications} keyExtractor={item=>item.id}\n-            renderItem={({item})=><Reuse.notification notification={item} />}\n-            /> : \n-          <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>\n-            <Text appearance={'hint'} category={'h5'}>No notifications.</Text>\n-          </Layout> }\n+          \n \n         </Layout>\n       </SafeAreaView>\n     </Layout>\n"
+                },
+                {
+                    "date": 1639411172228,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,9 +44,9 @@\n               <FlatList data={notifications} keyExtractor={item=>item.id}\n                 renderItem={({item})=><Reuse.notification notification={item} />}\n                 /> : \n               <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>\n-                <Text appearance={'hint'} category={'h5'}>No notifications.</Text>\n+                <Text appearance={'hint'} category={'h5'}>No notification yet.</Text>\n               </Layout> }\n           </View>\n           }\n \n"
+                }
+            ],
+            "date": 1639410169714,
+            "name": "Commit-0",
+            "content": "import React, { useEffect, useState } from 'react';\nimport { FlatList, SafeAreaView } from 'react-native';\nimport * as Reuse from '../components/reusables'\nimport * as API from '../api';\nimport { Icon, Layout, Text } from '@ui-kitten/components';\n\nconst Notifications = ({navigation}) =>{\n  \n  const [notifications, setnotifications] = useState([])\n\n  const loadNotifications = async ()=>{\n    try{\n\n      let data = await API.getNotifications()\n      setnotifications(data)\n      console.log(data)\n\n    }catch(e){\n\n    }\n  }\n\n  useEffect(() => {\n    (()=>{\n      loadNotifications()\n    })()\n  }, [])\n\n  return(\n    <Layout style={{ flex: 1 }}>\n      <SafeAreaView style={{flex: 1}}>\n        <Layout style={{ flex: 1 }}>\n          <Reuse.header nav={navigation} title={'Notications'}/>\n\n          { notifications.length > 0 ?\n          <FlatList data={notifications} keyExtractor={item=>item.id}\n            renderItem={({item})=><Reuse.notification notification={item} />}\n            /> : \n          <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>\n            <Text appearance={'hint'} category={'h5'}>No notifications.</Text>\n          </Layout> }\n\n        </Layout>\n      </SafeAreaView>\n    </Layout>\n  );\n}\n\nexport default Notifications"
+        }
+    ]
+}

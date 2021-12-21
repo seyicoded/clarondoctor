@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 12,
+            "activePatchIndex": 13,
             "patches": [
                 {
                     "date": 1639045365714,
@@ -56,6 +56,10 @@
                 {
                     "date": 1639046428878,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -207,9 +207,9 @@\n               <Button appearance={'outline'}>Withdraw Funds</Button> : <></>\n             }\n           </Card>\n \n-          <Text style={{margin: 10}} category='h6'>Earnings Oaverview</Text>\n+          <Text style={{margin: 10}} category='h6'>Earnings Overview</Text>\n           <BarChart\n             data={{\n               labels: months.slice(new Date().getMonth() > 6 ? new Date().getMonth()%6 : 0, new Date().getMonth()),\n               datasets: [\n"
+                },
+                {
+                    "date": 1639399247199,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -155,9 +155,10 @@\n             \n             { patient ?\n               <>\n                 <FlatList\n-                  data={drugs}\n+                  // data={drugs}\n+                  data={filteredusers}\n                   style={{maxHeight: 200, marginVertical: 10}}\n                   keyExtractor={item=>item.email}\n                   renderItem={({item})=>{\n                     return <TouchableOpacity onPress={()=>setpatient(item)}>\n"
                 }
             ],
             "date": 1639045365714,

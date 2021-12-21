@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 12,
+            "activePatchIndex": 14,
             "patches": [
                 {
                     "date": 1638959530323,
@@ -56,6 +56,14 @@
                 {
                     "date": 1639172001924,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -122,27 +122,25 @@\n \n     // registerForPushNotificationsAsync()\n \n     (async ()=>{\n-      \n+\n       try{\n         await API.getApiKey()\n       }catch(e){\n         console.log('api key fetch failed: ', e)\n       }\n \n-      setloading(false)\n-\n-      await registerForPushNotificationsAsync()\n-\n       let email = await AsyncStorage.getItem('_email')\n \n       if(email == null){\n         setlogged(false)\n       }else{\n         setlogged(true)\n       }\n       setloading(false)\n+      await registerForPushNotificationsAsync()\n+      \n     })()\n   }, [])\n \n   if(loading){\n"
+                },
+                {
+                    "date": 1639354299838,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,8 +25,10 @@\n \n // AsyncStorage.getAllKeys();\n // AsyncStorage.clear();\n \n+firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true });\n+\n firebase.apps.length == 0 ? firebase.initializeApp({\n   apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n   authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n   databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n"
+                },
+                {
+                    "date": 1639354337023,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,10 +25,8 @@\n \n // AsyncStorage.getAllKeys();\n // AsyncStorage.clear();\n \n-firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true });\n-\n firebase.apps.length == 0 ? firebase.initializeApp({\n   apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n   authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n   databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n@@ -38,8 +36,10 @@\n   appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n   measurementId: \"G-VWCS7XBQC3\"\n }) : null\n \n+firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true });\n+\n LogBox.ignoreAllLogs()\n const { Navigator, Screen } = createStackNavigator();\n \n export default () => {\n"
                 }
             ],
             "date": 1638959530323,

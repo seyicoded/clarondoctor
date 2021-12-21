@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 12,
+            "activePatchIndex": 17,
             "patches": [
                 {
                     "date": 1639063336790,
@@ -56,6 +56,26 @@
                 {
                     "date": 1639069348013,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,9 +25,9 @@\n \n export const update_physician = async(data)=>{\n     let key = await AsyncStorage.getItem('_apikey')\n     let auth = await AsyncStorage.getItem('_accesstoken')\n-    const response = await axios.default.put('https://api.clarondoc.com/users/update/profile',\n+    const response = await axios.default.put('https://api.clarondoc.com/physicians/update',\n         data,\n         {\n             headers: {\n                 'Content-Type': 'application/json',\n"
+                },
+                {
+                    "date": 1639410149900,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -233,8 +233,9 @@\n                 'Authorization': `Bearer ${token}`\n             }\n         })\n         data = res.data.notifications\n+        console.log(data)\n     }catch(e){\n         data = []\n     }\n \n"
+                },
+                {
+                    "date": 1639410194624,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -235,8 +235,9 @@\n         })\n         data = res.data.notifications\n         console.log(data)\n     }catch(e){\n+        console.log(e)\n         data = []\n     }\n \n     return data\n"
+                },
+                {
+                    "date": 1639410405181,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -226,9 +226,9 @@\n     try{\n         let key = await AsyncStorage.getItem('_apikey')\n         let email = await AsyncStorage.getItem('_email')\n         let token = await AsyncStorage.getItem('_accesstoken')\n-        let res = await axios.get(`${base_url}/notifications/users/${email}`, {\n+        let res = await axios.post(`${base_url}/notifications/users/${email}`, {\n             headers: {\n                 'x-api-key': key,\n                 'Authorization': `Bearer ${token}`\n             }\n"
+                },
+                {
+                    "date": 1639410430725,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -226,9 +226,9 @@\n     try{\n         let key = await AsyncStorage.getItem('_apikey')\n         let email = await AsyncStorage.getItem('_email')\n         let token = await AsyncStorage.getItem('_accesstoken')\n-        let res = await axios.post(`${base_url}/notifications/users/${email}`, {\n+        let res = await axios.get(`${base_url}/notifications/users/${email}`, {\n             headers: {\n                 'x-api-key': key,\n                 'Authorization': `Bearer ${token}`\n             }\n"
+                },
+                {
+                    "date": 1639410710114,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -233,11 +233,11 @@\n                 'Authorization': `Bearer ${token}`\n             }\n         })\n         data = res.data.notifications\n-        console.log(data)\n+        // console.log(data)\n     }catch(e){\n-        console.log(e)\n+        // console.log(e)\n         data = []\n     }\n \n     return data\n"
                 }
             ],
             "date": 1639063336790,

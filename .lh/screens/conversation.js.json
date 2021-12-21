@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 18,
+            "activePatchIndex": 58,
             "patches": [
                 {
                     "date": 1638790930564,
@@ -80,6 +80,166 @@
                 {
                     "date": 1639263378932,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,8 +27,9 @@\n     const [error, seterror] = useState()\n     const [selected, setSelected] = useState()\n     const [sendingNow, setsendingNow] = useState(false)\n     const [sendingNowAA, setsendingNowAA] = useState(false)\n+    const [loadingChat, setloadingChat] = useState(false)\n \n     const SendIcon = (props)=>{\n         return (\n             <TouchableOpacity onPress={send}>\n@@ -177,8 +178,9 @@\n \n             if(sent){\n                 setmessage('')\n                 setattachment(null)\n+                setloading(true)\n                 startStream()\n             }else{\n                 seterror('There was an error sending your message')\n             }\n"
+                },
+                {
+                    "date": 1639347680168,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -194,8 +194,39 @@\n     }\n \n     // sender, recipient, symptoms, message, attachment, file_type\n \n+    const chat_code = (patient, doctor)=>{\n+        return patient+'-'+doctor;\n+    }\n+\n+    const loadfirebasechat = async()=>{\n+        // const from = await AsyncStorage.getItem('email');\n+        // setMe(from)\n+        firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n+            var r = snapshot.docs.map(doc =>{\n+                return (doc.data())\n+                  \n+                // return {\n+                //     id: doc.id,\n+                //     data: (doc.data())\n+                //   }\n+              // check if data is thesame as uid\n+            //   if(my_data.uid != doc.id){\n+                \n+            //   }\n+              \n+            });\n+      \n+            console.log(r)\n+            setconversation(r)\n+            setloading(false)\n+            // setchat_record(r)\n+          }, error=>{\n+            console.log(error)\n+          });\n+    }\n+\n     const startStream = async ()=>{\n         try{\n             let data = await API.getConversation(route.params.user)\n             setconversation(data)\n@@ -209,10 +240,11 @@\n \n     useEffect(() => {\n         (async()=>{\n             setemail(await AsyncStorage.getItem('_email'))\n-            startStream()\n-            interval = setInterval(startStream, 10000)\n+            await loadfirebasechat()\n+            // startStream()\n+            // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n             clearInterval(interval)\n         }\n@@ -230,9 +262,9 @@\n                         keyExtractor={item=>item.id}\n                         style={{marginBottom: 75}}\n                         refreshing={loading}\n                         showsVerticalScrollIndicator={false}\n-                        refreshControl={<RefreshControl refreshing={loading} onRefresh={startStream} />}\n+                        refreshControl={<RefreshControl refreshing={loading} onRefresh={loadfirebasechat} />}\n                         renderItem={({item})=><Reuse.message email={email} message={item} chat={item}/>}/>\n \n                     <Layout level={'2'} style={{bottom: 10, right: 10, left: 10, position: 'absolute'}}>\n                         { attachment ?\n"
+                },
+                {
+                    "date": 1639347718386,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -201,8 +201,9 @@\n \n     const loadfirebasechat = async()=>{\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n+        console.log(route.params.user)\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n                 return (doc.data())\n                   \n"
+                },
+                {
+                    "date": 1639347742788,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -202,8 +202,9 @@\n     const loadfirebasechat = async()=>{\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n         console.log(route.params.user)\n+        console.log(email)\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n                 return (doc.data())\n                   \n"
+                },
+                {
+                    "date": 1639347821654,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -201,10 +201,10 @@\n \n     const loadfirebasechat = async()=>{\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n-        console.log(route.params.user)\n-        console.log(email)\n+        // console.log(route.params.user)\n+        // console.log(email)\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n                 return (doc.data())\n                   \n@@ -218,8 +218,9 @@\n             //   }\n               \n             });\n       \n+            console.log('reach: ')\n             console.log(r)\n             setconversation(r)\n             setloading(false)\n             // setchat_record(r)\n"
+                },
+                {
+                    "date": 1639348006946,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -201,10 +201,10 @@\n \n     const loadfirebasechat = async()=>{\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n-        // console.log(route.params.user)\n-        // console.log(email)\n+        console.log(route.params.user)\n+        console.log(email)\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n                 return (doc.data())\n                   \n@@ -218,9 +218,9 @@\n             //   }\n               \n             });\n       \n-            console.log('reach: ')\n+            // console.log('reach: ')\n             console.log(r)\n             setconversation(r)\n             setloading(false)\n             // setchat_record(r)\n"
+                },
+                {
+                    "date": 1639348027479,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -201,10 +201,10 @@\n \n     const loadfirebasechat = async()=>{\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n-        console.log(route.params.user)\n-        console.log(email)\n+        console.log(route.params.user+'-'+email)\n+        // console.log(email)\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n                 return (doc.data())\n                   \n"
+                },
+                {
+                    "date": 1639348090318,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -201,9 +201,9 @@\n \n     const loadfirebasechat = async()=>{\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n-        console.log(route.params.user+'-'+email)\n+        console.log(chat_code(route.params.user, email))\n         // console.log(email)\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n                 return (doc.data())\n"
+                },
+                {
+                    "date": 1639348136826,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -201,9 +201,9 @@\n \n     const loadfirebasechat = async()=>{\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n-        console.log(chat_code(route.params.user, email))\n+        // console.log(chat_code(route.params.user, email))\n         // console.log(email)\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n                 return (doc.data())\n"
+                },
+                {
+                    "date": 1639348319573,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -201,9 +201,9 @@\n \n     const loadfirebasechat = async()=>{\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n-        // console.log(chat_code(route.params.user, email))\n+        console.log(chat_code(route.params.user, email))\n         // console.log(email)\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n                 return (doc.data())\n"
+                },
+                {
+                    "date": 1639348338525,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -201,12 +201,13 @@\n \n     const loadfirebasechat = async()=>{\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n-        console.log(chat_code(route.params.user, email))\n+        // console.log(chat_code(route.params.user, email))\n         // console.log(email)\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n+                console.log(doc)\n                 return (doc.data())\n                   \n                 // return {\n                 //     id: doc.id,\n"
+                },
+                {
+                    "date": 1639348350466,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -205,9 +205,8 @@\n         // console.log(chat_code(route.params.user, email))\n         // console.log(email)\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n-                console.log(doc)\n                 return (doc.data())\n                   \n                 // return {\n                 //     id: doc.id,\n"
+                },
+                {
+                    "date": 1639348850570,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -166,18 +166,24 @@\n         try{\n \n             let email = await AsyncStorage.getItem('_email')\n \n-            let sent = API.sendMessage({\n+            let sen = {\n                 message: messag.trim(),\n                 recipient: route.params.user,\n                 attachment: url,\n                 file_type: type,\n                 sender: email,\n-                symptoms: []\n-            })\n+                symptoms: [],\n+                createDate: (new Date()).toLocaleDateString(),\n+                timeStamp: Date.now()\n+            };\n \n-            if(sent){\n+            API.sendMessage(sen)\n+\n+            await firebase.firestore().collection('newSMessages').doc(chat_code(email, doctor.email)).collection('messages').add(sen);\n+\n+            if(true){\n                 setmessage('')\n                 setattachment(null)\n                 setloading(true)\n                 startStream()\n"
+                },
+                {
+                    "date": 1639348891368,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -179,9 +179,9 @@\n             };\n \n             API.sendMessage(sen)\n \n-            await firebase.firestore().collection('newSMessages').doc(chat_code(email, doctor.email)).collection('messages').add(sen);\n+            await firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').add(sen);\n \n             if(true){\n                 setmessage('')\n                 setattachment(null)\n"
+                },
+                {
+                    "date": 1639348907525,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -185,9 +185,9 @@\n             if(true){\n                 setmessage('')\n                 setattachment(null)\n                 setloading(true)\n-                startStream()\n+                // startStream()\n             }else{\n                 seterror('There was an error sending your message')\n             }\n \n"
+                },
+                {
+                    "date": 1639348997335,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -131,9 +131,9 @@\n       }\n \n     const send = async () => {\n \n-        let url, type\n+        let url = ''; let type = '';\n \n         var messag = message;\n         if(message.length == 0){\n             messag = 'Media Attachment';\n"
+                },
+                {
+                    "date": 1639349314132,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,8 +12,19 @@\n // import { ActivityIndicator } from 'react-native-paper';\n \n let interval\n \n+firebase.apps.length == 0 ? firebase.initializeApp({\n+    apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n+    authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n+    databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n+    projectId: \"fcm-notify-db9b8\",\n+    storageBucket: \"fcm-notify-db9b8.appspot.com\",\n+    messagingSenderId: \"77071010064\",\n+    appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n+    measurementId: \"G-VWCS7XBQC3\"\n+  }) : null\n+\n const Conversation = ({navigation, route}) =>{\n     \n     const [email, setemail] = useState('')\n     const [user, setuser] = useState()\n"
+                },
+                {
+                    "date": 1639349834243,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n // import { ActivityIndicator } from 'react-native-paper';\n \n let interval\n \n-firebase.apps.length == 0 ? firebase.initializeApp({\n+true ? firebase.initializeApp({\n     apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n     authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n     databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n     projectId: \"fcm-notify-db9b8\",\n"
+                },
+                {
+                    "date": 1639349848165,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n // import { ActivityIndicator } from 'react-native-paper';\n \n let interval\n \n-true ? firebase.initializeApp({\n+firebase.apps.length == 0 ? firebase.initializeApp({\n     apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n     authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n     databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n     projectId: \"fcm-notify-db9b8\",\n"
+                },
+                {
+                    "date": 1639350136048,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,18 +12,18 @@\n // import { ActivityIndicator } from 'react-native-paper';\n \n let interval\n \n-firebase.apps.length == 0 ? firebase.initializeApp({\n-    apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n-    authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n-    databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n-    projectId: \"fcm-notify-db9b8\",\n-    storageBucket: \"fcm-notify-db9b8.appspot.com\",\n-    messagingSenderId: \"77071010064\",\n-    appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n-    measurementId: \"G-VWCS7XBQC3\"\n-  }) : null\n+// firebase.apps.length == 0 ? firebase.initializeApp({\n+//     apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n+//     authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n+//     databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n+//     projectId: \"fcm-notify-db9b8\",\n+//     storageBucket: \"fcm-notify-db9b8.appspot.com\",\n+//     messagingSenderId: \"77071010064\",\n+//     appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n+//     measurementId: \"G-VWCS7XBQC3\"\n+//   }) : null\n \n const Conversation = ({navigation, route}) =>{\n     \n     const [email, setemail] = useState('')\n"
+                },
+                {
+                    "date": 1639350234164,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -261,8 +261,9 @@\n     useEffect(() => {\n         (async()=>{\n             setemail(await AsyncStorage.getItem('_email'))\n             await loadfirebasechat()\n+            await loadfirebasechat()\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n"
+                },
+                {
+                    "date": 1639350244619,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -261,9 +261,8 @@\n     useEffect(() => {\n         (async()=>{\n             setemail(await AsyncStorage.getItem('_email'))\n             await loadfirebasechat()\n-            await loadfirebasechat()\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n"
+                },
+                {
+                    "date": 1639350301174,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -260,9 +260,11 @@\n \n     useEffect(() => {\n         (async()=>{\n             setemail(await AsyncStorage.getItem('_email'))\n+            console.log('a')\n             await loadfirebasechat()\n+            console.log('b')\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n"
+                },
+                {
+                    "date": 1639350393756,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -260,11 +260,9 @@\n \n     useEffect(() => {\n         (async()=>{\n             setemail(await AsyncStorage.getItem('_email'))\n-            console.log('a')\n             await loadfirebasechat()\n-            console.log('b')\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n"
+                },
+                {
+                    "date": 1639350468606,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,18 +12,18 @@\n // import { ActivityIndicator } from 'react-native-paper';\n \n let interval\n \n-// firebase.apps.length == 0 ? firebase.initializeApp({\n-//     apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n-//     authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n-//     databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n-//     projectId: \"fcm-notify-db9b8\",\n-//     storageBucket: \"fcm-notify-db9b8.appspot.com\",\n-//     messagingSenderId: \"77071010064\",\n-//     appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n-//     measurementId: \"G-VWCS7XBQC3\"\n-//   }) : null\n+firebase.apps.length == 0 ? firebase.initializeApp({\n+    apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n+    authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n+    databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n+    projectId: \"fcm-notify-db9b8\",\n+    storageBucket: \"fcm-notify-db9b8.appspot.com\",\n+    messagingSenderId: \"77071010064\",\n+    appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n+    measurementId: \"G-VWCS7XBQC3\"\n+  }) : null\n \n const Conversation = ({navigation, route}) =>{\n     \n     const [email, setemail] = useState('')\n"
+                },
+                {
+                    "date": 1639350483058,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,20 +12,20 @@\n // import { ActivityIndicator } from 'react-native-paper';\n \n let interval\n \n-firebase.apps.length == 0 ? firebase.initializeApp({\n-    apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n-    authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n-    databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n-    projectId: \"fcm-notify-db9b8\",\n-    storageBucket: \"fcm-notify-db9b8.appspot.com\",\n-    messagingSenderId: \"77071010064\",\n-    appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n-    measurementId: \"G-VWCS7XBQC3\"\n-  }) : null\n+const Conversation = ({navigation, route}) =>{\n \n-const Conversation = ({navigation, route}) =>{\n+    firebase.apps.length == 0 ? firebase.initializeApp({\n+        apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n+        authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n+        databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n+        projectId: \"fcm-notify-db9b8\",\n+        storageBucket: \"fcm-notify-db9b8.appspot.com\",\n+        messagingSenderId: \"77071010064\",\n+        appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n+        measurementId: \"G-VWCS7XBQC3\"\n+      }) : null\n     \n     const [email, setemail] = useState('')\n     const [user, setuser] = useState()\n     const [message, setmessage] = useState('')\n"
+                },
+                {
+                    "date": 1639350500464,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,19 +13,8 @@\n \n let interval\n \n const Conversation = ({navigation, route}) =>{\n-\n-    firebase.apps.length == 0 ? firebase.initializeApp({\n-        apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n-        authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n-        databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n-        projectId: \"fcm-notify-db9b8\",\n-        storageBucket: \"fcm-notify-db9b8.appspot.com\",\n-        messagingSenderId: \"77071010064\",\n-        appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n-        measurementId: \"G-VWCS7XBQC3\"\n-      }) : null\n     \n     const [email, setemail] = useState('')\n     const [user, setuser] = useState()\n     const [message, setmessage] = useState('')\n"
+                },
+                {
+                    "date": 1639350553349,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -250,8 +250,12 @@\n     useEffect(() => {\n         (async()=>{\n             setemail(await AsyncStorage.getItem('_email'))\n             await loadfirebasechat()\n+\n+            setTimeout(()=>{\n+                loadfirebasechat()\n+            }, 1000)\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n"
+                },
+                {
+                    "date": 1639350569624,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -253,9 +253,9 @@\n             await loadfirebasechat()\n \n             setTimeout(()=>{\n                 loadfirebasechat()\n-            }, 1000)\n+            }, 3000)\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n"
+                },
+                {
+                    "date": 1639350592550,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -252,8 +252,9 @@\n             setemail(await AsyncStorage.getItem('_email'))\n             await loadfirebasechat()\n \n             setTimeout(()=>{\n+                console.log('a')\n                 loadfirebasechat()\n             }, 3000)\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n"
+                },
+                {
+                    "date": 1639350611139,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -254,9 +254,9 @@\n \n             setTimeout(()=>{\n                 console.log('a')\n                 loadfirebasechat()\n-            }, 3000)\n+            }, 5000)\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n"
+                },
+                {
+                    "date": 1639350638280,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -250,13 +250,8 @@\n     useEffect(() => {\n         (async()=>{\n             setemail(await AsyncStorage.getItem('_email'))\n             await loadfirebasechat()\n-\n-            setTimeout(()=>{\n-                console.log('a')\n-                loadfirebasechat()\n-            }, 5000)\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n"
+                },
+                {
+                    "date": 1639350659521,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -249,9 +249,9 @@\n \n     useEffect(() => {\n         (async()=>{\n             setemail(await AsyncStorage.getItem('_email'))\n-            await loadfirebasechat()\n+            loadfirebasechat()\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n"
+                },
+                {
+                    "date": 1639350800868,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import React, { useEffect, useState } from 'react';\n+import React, { useEffect, useState, useRef } from 'react';\n import * as Reuse from '../components/reusables'\n import {Platform } from 'react-native'\n import { Dimensions, FlatList, RefreshControl, View, ActivityIndicator } from 'react-native';\n import AsyncStorage from '@react-native-async-storage/async-storage';\n@@ -29,8 +29,10 @@\n     const [sendingNow, setsendingNow] = useState(false)\n     const [sendingNowAA, setsendingNowAA] = useState(false)\n     const [loadingChat, setloadingChat] = useState(false)\n \n+    const emailR = useRef(null);\n+\n     const SendIcon = (props)=>{\n         return (\n             <TouchableOpacity onPress={send}>\n                 <Icon {...props} name=\"navigation-2-outline\"/>\n@@ -209,9 +211,9 @@\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n         // console.log(chat_code(route.params.user, email))\n         // console.log(email)\n-        firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n+        firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, emailR.current)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n                 return (doc.data())\n                   \n                 // return {\n@@ -248,10 +250,12 @@\n     }\n \n     useEffect(() => {\n         (async()=>{\n-            setemail(await AsyncStorage.getItem('_email'))\n-            loadfirebasechat()\n+            let ema = await AsyncStorage.getItem('_email');\n+            setemail(ema)\n+            emailR.current = ema;\n+            await loadfirebasechat()\n             // startStream()\n             // interval = setInterval(startStream, 10000)\n         })()\n         return ()=>{\n"
+                },
+                {
+                    "date": 1639350985644,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -175,9 +175,9 @@\n                 attachment: url,\n                 file_type: type,\n                 sender: email,\n                 symptoms: [],\n-                createDate: (new Date()).toLocaleDateString(),\n+                createDate: (new Date()).toDateString(),\n                 timeStamp: Date.now()\n             };\n \n             API.sendMessage(sen)\n"
+                },
+                {
+                    "date": 1639351039911,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -175,9 +175,9 @@\n                 attachment: url,\n                 file_type: type,\n                 sender: email,\n                 symptoms: [],\n-                createDate: (new Date()).toDateString(),\n+                createDate: (new Date()).toLocaleString(),\n                 timeStamp: Date.now()\n             };\n \n             API.sendMessage(sen)\n"
+                },
+                {
+                    "date": 1639351447782,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,8 +31,10 @@\n     const [loadingChat, setloadingChat] = useState(false)\n \n     const emailR = useRef(null);\n \n+    console.log(emailR.current)\n+\n     const SendIcon = (props)=>{\n         return (\n             <TouchableOpacity onPress={send}>\n                 <Icon {...props} name=\"navigation-2-outline\"/>\n"
+                },
+                {
+                    "date": 1639351534193,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,9 +31,9 @@\n     const [loadingChat, setloadingChat] = useState(false)\n \n     const emailR = useRef(null);\n \n-    console.log(emailR.current)\n+    // console.log(emailR.current)\n \n     const SendIcon = (props)=>{\n         return (\n             <TouchableOpacity onPress={send}>\n"
+                },
+                {
+                    "date": 1639351783826,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -212,9 +212,9 @@\n     const loadfirebasechat = async()=>{\n         // const from = await AsyncStorage.getItem('email');\n         // setMe(from)\n         // console.log(chat_code(route.params.user, email))\n-        // console.log(email)\n+        console.log(chat_code(route.params.user, emailR.current))\n         firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, emailR.current)).collection('messages').orderBy('timeStamp', 'desc').onSnapshot(snapshot=>{\n             var r = snapshot.docs.map(doc =>{\n                 return (doc.data())\n                   \n"
+                },
+                {
+                    "date": 1639352508289,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,8 +13,19 @@\n \n let interval\n \n const Conversation = ({navigation, route}) =>{\n+\n+    firebase.apps.length == 0 ? firebase.initializeApp({\n+        apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n+        authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n+        databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n+        projectId: \"fcm-notify-db9b8\",\n+        storageBucket: \"fcm-notify-db9b8.appspot.com\",\n+        messagingSenderId: \"77071010064\",\n+        appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n+        measurementId: \"G-VWCS7XBQC3\"\n+      }) : null\n     \n     const [email, setemail] = useState('')\n     const [user, setuser] = useState()\n     const [message, setmessage] = useState('')\n"
+                },
+                {
+                    "date": 1639354671763,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -199,9 +199,9 @@\n \n             if(true){\n                 setmessage('')\n                 setattachment(null)\n-                setloading(true)\n+                // setloading(true)\n                 // startStream()\n             }else{\n                 seterror('There was an error sending your message')\n             }\n"
                 }
             ],
             "date": 1638790930564,
