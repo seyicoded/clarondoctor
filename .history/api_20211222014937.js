@@ -4,11 +4,7 @@ const axios = require('axios').default
 let base_url = 'https://api.clarondoc.com'
 
 //authenticate doctors into the app
-export const getuserDetails = async () => {
-    const email = await AsyncStorage.getItem('_email')
-    const auth = await AsyncStorage.getItem('_accesstoken')
-    let key = await AsyncStorage.getItem('_apikey')
-
+export const getuserDetails = async (email, key, auth) => {
     const response = await axios({
         method: 'GET',
         url: 'https://api.clarondoc.com/physicians/'+email,

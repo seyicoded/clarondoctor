@@ -485,7 +485,7 @@ const uriToBlob = (uri) => {
 
             <View>
               <Text />
-              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'SAVE AVAILABILITY'}</Button>
+              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>
             </View>
           </ScrollView>
           }

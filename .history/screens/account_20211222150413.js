@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList, Alert } from 'react-native';
+import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import * as Reuse from '../components/reusables'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as API from '../api';
@@ -241,7 +241,6 @@ const uriToBlob = (uri) => {
 
       await firebase.firestore().collection('newMyAvail').doc(email).set({date_entry: time_selected});
 
-      Alert.alert('Availability Updated');
     } catch (error) {
       console.log(error)
     }
@@ -485,7 +484,7 @@ const uriToBlob = (uri) => {
 
             <View>
               <Text />
-              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'SAVE AVAILABILITY'}</Button>
+              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>
             </View>
           </ScrollView>
           }

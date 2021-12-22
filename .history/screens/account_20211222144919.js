@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList, Alert } from 'react-native';
+import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import * as Reuse from '../components/reusables'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as API from '../api';
@@ -58,7 +58,7 @@ const Account = ({navigation}) =>{
     // setlist_time(list_time)
     setloading(true)
     setloading(false)
-    // console.log('reached')
+    console.log('reached')
   }, [time_selected, list_time, list_time_ref.current])
 
   const renderTime = ({item})=>{
@@ -90,7 +90,7 @@ const Account = ({navigation}) =>{
 
       const userData = await API.getuserDetails();
       
-      // console.log(userData)
+      console.log(userData)
 
     })()
 
@@ -239,11 +239,10 @@ const uriToBlob = (uri) => {
     try {
       const email = await AsyncStorage.getItem('_email')
 
-      await firebase.firestore().collection('newMyAvail').doc(email).set({date_entry: time_selected});
+      await firebase.firestore().collection('newMyAvail').doc(email).set(time_selected);
 
-      Alert.alert('Availability Updated');
     } catch (error) {
-      console.log(error)
+      
     }
     setloading(false)
   }
@@ -352,21 +351,6 @@ const uriToBlob = (uri) => {
     }, 3)
   }
 
-  useEffect(() => {
-    (async()=>{
-      // start
-      const email = await AsyncStorage.getItem('_email')
-      firebase.firestore().collection('newMyAvail').doc(email).onSnapshot(snapshot=>{
-        console.log(snapshot.data().date_entry);
-
-        settime_selected(snapshot.data().date_entry);
-        
-      }, error=>{
-        console.log(error)
-      });
-      // end
-    })()
-  }, [])
   // console.log(time_selected)
 
   return(
@@ -485,7 +469,7 @@ const uriToBlob = (uri) => {
 
             <View>
               <Text />
-              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'SAVE AVAILABILITY'}</Button>
+              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>
             </View>
           </ScrollView>
           }

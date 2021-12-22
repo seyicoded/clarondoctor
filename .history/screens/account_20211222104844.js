@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import * as Reuse from '../components/reusables'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as API from '../api';
 import DocumentPicker from 'react-native-document-picker'
 import { Avatar, Text, Layout, Input, Button, TabBar, Tab, Calendar,Modal, Card, Icon } from '@ui-kitten/components';
 import firebase from 'firebase';
-import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen';
 
 const Account = ({navigation}) =>{
   
@@ -17,7 +16,7 @@ const Account = ({navigation}) =>{
   const [error, seterror] = useState()
   const [loading, setloading] = useState(false)
   const [imgloading, setimgloading] = useState(false)
-  const [time_selected, settime_selected] = useState([])
+  const [time_selected, settime_selected] = useState({})
   const [response, setresponse] = useState({
     error: false,
     message: null
@@ -33,7 +32,7 @@ const Account = ({navigation}) =>{
     phoneNumber: ''
   })
 
-  const [list_time, setlist_time] = useState([
+  const list_time = [
     '06:00 - 07:00',
     '07:00 - 08:00',
     '08:00 - 09:00',
@@ -48,24 +47,13 @@ const Account = ({navigation}) =>{
     '17:00 - 18:00',
     '18:00 - 19:00',
     '19:00 - 20:00',
-    '20:00 - 21:00'
-  ])
+    '20:00 - 21:00',
+  ];
 
-  const list_time_ref = useRef(null);
-  list_time_ref.current = new Date();
-
-  useEffect(()=>{
-    // setlist_time(list_time)
-    setloading(true)
-    setloading(false)
-    // console.log('reached')
-  }, [time_selected, list_time, list_time_ref.current])
-
-  const renderTime = ({item})=>{
-    // console.log(item)
-    return (
-      <Button style={{margin: 0.5}} onPress={()=>addToSelected(item)} appearance={(getIfSelected(item) == true) ? "filled" : "outline"}>{item}</Button>
-    );
+  const renderTime = (index)=>{
+    return (<View>
+      <Text>aaa</Text>
+    </View>);
   }
 
   const logout = async ()=>{
@@ -90,7 +78,7 @@ const Account = ({navigation}) =>{
 
       const userData = await API.getuserDetails();
       
-      // console.log(userData)
+      console.log(userData)
 
     })()
 
@@ -237,137 +225,18 @@ const uriToBlob = (uri) => {
   const updateAvailbility = async()=>{
     setloading(true)
     try {
-      const email = await AsyncStorage.getItem('_email')
-
-      await firebase.firestore().collection('newMyAvail').doc(email).set({date_entry: time_selected});
-
-      Alert.alert('Availability Updated');
+      let date_ = date.toLocaleDateString();
+      let times = await getTimeSelected();
+      console.log(times)
     } catch (error) {
-      console.log(error)
+      
     }
     setloading(false)
   }
 
   const getTimeSelected = async()=>{
-    return false;
-  }
-
-  const getIfSelected = (item)=>{
-    let date_ = (date).toLocaleDateString()
-    let index = null;
-    for(var i = 0; i < time_selected.length ; i++){
-      if(time_selected[i].date == date_){
-        index = i;
-        continue;
-      }
-
-    }
-
-    if(index == null){
-      return false
-    }else{
-      // check if time exist
-      let index1 = null;
-      for(var j = 0; j < (time_selected[index].times).length ; j++){
-        if( ((time_selected[index].times)[j]) == item){
-          index1 = j;
-          continue;
-        }
-      }
-      if(index1 == null){
-        return false
-      }else{
-        return true
-      }
-    }
-
-    
-  }
-
-  const addToSelected = (item)=>{
-    let date_ = (date).toLocaleDateString()
-    let index = null;
-    for(var i = 0; i < time_selected.length ; i++){
-      if(time_selected[i].date == date_){
-        index = i;
-        continue;
-      }
-
-    }
-
-    if(index == null){
-      let new_time = [{
-        date: date_,
-        times : [item]
-      }]
-      settime_selected(new_time.concat(time_selected));
-    }else{
-      // check if time exist
-      let index1 = null;
-      for(var j = 0; j < (time_selected[index].times).length ; j++){
-        if( ((time_selected[index].times)[j]) == item){
-          index1 = j;
-          continue;
-        }
-      }
-      if(index1 == null){
-        // add time
-        let old_time = time_selected;
-        // old
-        old_time[index].times = ([item].concat(old_time[index].times));
-        // console.log(old_time)
-        settime_selected(old_time)
-      }else{
-        // ignore time already exist
-        // pop time out
-
-        // add time
-        let old_time = time_selected;
-        let new_time = [];
-        let count = 0;
-        for(var p = 0 ; p < (old_time[index].times).length; p++){
-          if(item != (old_time[index].times)[p] ){
-            new_time[count] = (old_time[index].times)[p];
-            count++;
-          }
-        }
-        old_time[index].times = new_time;
-        // console.log(old_time)
-        settime_selected(old_time)
-      }
-    }
-
-    setloading(true)
-    reload();
-    
-    list_time_ref.current = new Date();
 
   }
-
-  const reload = async()=>{
-    const new_t = list_time;
-    setlist_time([])
-    setTimeout(()=>{
-      setlist_time(new_t)
-    }, 3)
-  }
-
-  useEffect(() => {
-    (async()=>{
-      // start
-      const email = await AsyncStorage.getItem('_email')
-      firebase.firestore().collection('newMyAvail').doc(email).onSnapshot(snapshot=>{
-        console.log(snapshot.data().date_entry);
-
-        settime_selected(snapshot.data().date_entry);
-        
-      }, error=>{
-        console.log(error)
-      });
-      // end
-    })()
-  }, [])
-  // console.log(time_selected)
 
   return(
     <Layout style={{ flex: 1 }}>
@@ -468,24 +337,12 @@ const uriToBlob = (uri) => {
 
             <FlatList
             data={list_time}
-            style={{width: '100%'}}
             numColumns={3}
             renderItem={renderTime}
-            extraData={list_time}
-            keyExtractor={item => item.id}
             />
 
-            {/* <View style={{flex: 1,}}>
-              {
-                list_time.map(item=>{
-                  return <View style={{flex: 1}}>{renderTime({item: item})}</View>
-                })
-              }
-            </View> */}
-
             <View>
-              <Text />
-              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'SAVE AVAILABILITY'}</Button>
+              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>
             </View>
           </ScrollView>
           }

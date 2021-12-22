@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 29,
+            "activePatchIndex": 153,
             "patches": [
                 {
                     "date": 1639062252106,
@@ -124,6 +124,502 @@
                 {
                     "date": 1639264148496,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -113,8 +113,13 @@\n     })\n \n       if (!result.cancelled) {\n         result = (result[0]);\n+        if(result.size/1024 > 500){\n+            seterror(`${attached.name} cannot be attached. Exceed the maximum upload size (500KB).`)\n+            return false\n+        }\n+\n         var path = getPlatformPath(result).value;\n         var name = getFileName(result.name, path);\n         var blob = await uriToBlob(result.uri);\n         let type = result.type;\n"
+                },
+                {
+                    "date": 1640133542187,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,8 +49,13 @@\n           gender: JSON.parse(account).sex,\n           phoneNumber: JSON.parse(account).phone\n         }\n       })\n+\n+      // get user-data\n+      const email = await AsyncStorage.getItem('_email')\n+      const auth = await AsyncStorage.getItem('_accesstoken')\n+\n     })()\n \n   }, [])\n \n"
+                },
+                {
+                    "date": 1640133638327,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -53,9 +53,13 @@\n \n       // get user-data\n       const email = await AsyncStorage.getItem('_email')\n       const auth = await AsyncStorage.getItem('_accesstoken')\n+      const key = await API.getApiKey();\n+      const userData = await API.userDetails(email, key, auth);\n \n+      console.log(userData)\n+\n     })()\n \n   }, [])\n \n"
+                },
+                {
+                    "date": 1640133843192,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,8 +56,11 @@\n       const auth = await AsyncStorage.getItem('_accesstoken')\n       const key = await API.getApiKey();\n       const userData = await API.userDetails(email, key, auth);\n \n+      console.log('email'+email)\n+      console.log('auth'+auth)\n+      console.log('key'+key)\n       console.log(userData)\n \n     })()\n \n"
+                },
+                {
+                    "date": 1640133926980,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -54,13 +54,16 @@\n       // get user-data\n       const email = await AsyncStorage.getItem('_email')\n       const auth = await AsyncStorage.getItem('_accesstoken')\n       const key = await API.getApiKey();\n-      const userData = await API.userDetails(email, key, auth);\n \n       console.log('email'+email)\n       console.log('auth'+auth)\n       console.log('key'+key)\n+      \n+      const userData = await API.userDetails(email, key, auth);\n+\n+      \n       console.log(userData)\n \n     })()\n \n"
+                },
+                {
+                    "date": 1640133969074,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -55,12 +55,10 @@\n       const email = await AsyncStorage.getItem('_email')\n       const auth = await AsyncStorage.getItem('_accesstoken')\n       const key = await API.getApiKey();\n \n-      console.log('email'+email)\n-      console.log('auth'+auth)\n-      console.log('key'+key)\n-      \n+      console.log('key: '+key)\n+\n       const userData = await API.userDetails(email, key, auth);\n \n       \n       console.log(userData)\n"
+                },
+                {
+                    "date": 1640133995380,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -53,9 +53,10 @@\n \n       // get user-data\n       const email = await AsyncStorage.getItem('_email')\n       const auth = await AsyncStorage.getItem('_accesstoken')\n-      const key = await API.getApiKey();\n+      // const key = await API.getApiKey();\n+      let key = await AsyncStorage.getItem('_apikey')\n \n       console.log('key: '+key)\n \n       const userData = await API.userDetails(email, key, auth);\n"
+                },
+                {
+                    "date": 1640134032044,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -53,16 +53,12 @@\n \n       // get user-data\n       const email = await AsyncStorage.getItem('_email')\n       const auth = await AsyncStorage.getItem('_accesstoken')\n-      // const key = await API.getApiKey();\n       let key = await AsyncStorage.getItem('_apikey')\n \n-      console.log('key: '+key)\n-\n       const userData = await API.userDetails(email, key, auth);\n \n-      \n       console.log(userData)\n \n     })()\n \n"
+                },
+                {
+                    "date": 1640134242389,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,15 +50,11 @@\n           phoneNumber: JSON.parse(account).phone\n         }\n       })\n \n-      // get user-data\n-      const email = await AsyncStorage.getItem('_email')\n-      const auth = await AsyncStorage.getItem('_accesstoken')\n-      let key = await AsyncStorage.getItem('_apikey')\n+      \n+      const userData = await API.getuserDetails();\n \n-      const userData = await API.userDetails(email, key, auth);\n-\n       console.log(userData)\n \n     })()\n \n"
+                },
+                {
+                    "date": 1640134258947,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,11 +50,9 @@\n           phoneNumber: JSON.parse(account).phone\n         }\n       })\n \n-      \n       const userData = await API.getuserDetails();\n-\n       console.log(userData)\n \n     })()\n \n"
+                },
+                {
+                    "date": 1640164647597,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -51,9 +51,10 @@\n         }\n       })\n \n       const userData = await API.getuserDetails();\n-      console.log(userData)\n+      \n+      console.log(await AsyncStorage.getAllKeys())\n \n     })()\n \n   }, [])\n"
+                },
+                {
+                    "date": 1640164676757,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n       })\n \n       const userData = await API.getuserDetails();\n       \n-      console.log(await AsyncStorage.getAllKeys())\n+      console.log(await AsyncStorage.getItem('user'))\n \n     })()\n \n   }, [])\n"
+                },
+                {
+                    "date": 1640164721166,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n       })\n \n       const userData = await API.getuserDetails();\n       \n-      console.log(await AsyncStorage.getItem('user'))\n+      console.log(userData)\n \n     })()\n \n   }, [])\n"
+                },
+                {
+                    "date": 1640165522219,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -316,8 +316,12 @@\n               <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1600-1700</Button>\n               <Button style={{flex: 1, marginHorizontal: 10}} size={'small'} appearance={'outline'}>1700-1800</Button>\n               <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1800-1900</Button>\n             </View>\n+\n+            <View>\n+              <Button>UPDATE</Button>\n+            </View>\n           </ScrollView>\n           }\n         </Layout>\n       </SafeAreaView>\n"
+                },
+                {
+                    "date": 1640165534746,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -318,9 +318,9 @@\n               <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1800-1900</Button>\n             </View>\n \n             <View>\n-              <Button>UPDATE</Button>\n+              <Button>UPDATE AVAILABILITY</Button>\n             </View>\n           </ScrollView>\n           }\n         </Layout>\n"
+                },
+                {
+                    "date": 1640165553704,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n   const [selected, setselected] = useState([])\n   const [user, setUser] = useState()\n   const [error, seterror] = useState()\n   const [loading, setloading] = useState(false)\n-  const [imgloading, setimgloading] = useState(false)\n+  const [imgloading, setimgloading] = useState(true)\n   const [response, setresponse] = useState({\n     error: false,\n     message: null\n   })\n"
+                },
+                {
+                    "date": 1640165565884,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n   const [selected, setselected] = useState([])\n   const [user, setUser] = useState()\n   const [error, seterror] = useState()\n   const [loading, setloading] = useState(false)\n-  const [imgloading, setimgloading] = useState(true)\n+  const [imgloading, setimgloading] = useState(false)\n   const [response, setresponse] = useState({\n     error: false,\n     message: null\n   })\n"
+                },
+                {
+                    "date": 1640165615475,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -318,9 +318,9 @@\n               <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1800-1900</Button>\n             </View>\n \n             <View>\n-              <Button>UPDATE AVAILABILITY</Button>\n+              <Button disabled={loading}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n             </View>\n           </ScrollView>\n           }\n         </Layout>\n"
+                },
+                {
+                    "date": 1640165707304,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -196,8 +196,12 @@\n \n     setloading(false)\n   }\n \n+  const updateAvailbility = async()=>{\n+    setimgloading(true)\n+  }\n+\n   return(\n     <Layout style={{ flex: 1 }}>\n       <SafeAreaView style={{flex: 1}}>\n         <Layout style={{ flex: 1 }}>\n@@ -318,9 +322,9 @@\n               <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1800-1900</Button>\n             </View>\n \n             <View>\n-              <Button disabled={loading}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n+              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n             </View>\n           </ScrollView>\n           }\n         </Layout>\n"
+                },
+                {
+                    "date": 1640165718413,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -197,9 +197,9 @@\n     setloading(false)\n   }\n \n   const updateAvailbility = async()=>{\n-    setimgloading(true)\n+    setimgloading(false)\n   }\n \n   return(\n     <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640165749697,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -197,9 +197,10 @@\n     setloading(false)\n   }\n \n   const updateAvailbility = async()=>{\n-    setimgloading(false)\n+    setloading(true)\n+    setloading(false)\n   }\n \n   return(\n     <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640165859645,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -198,8 +198,14 @@\n   }\n \n   const updateAvailbility = async()=>{\n     setloading(true)\n+    try {\n+      let date_ = date.toDateString();\n+      console.log(date_)\n+    } catch (error) {\n+      \n+    }\n     setloading(false)\n   }\n \n   return(\n"
+                },
+                {
+                    "date": 1640165879513,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -199,9 +199,9 @@\n \n   const updateAvailbility = async()=>{\n     setloading(true)\n     try {\n-      let date_ = date.toDateString();\n+      let date_ = date.toLocaleDateString();\n       console.log(date_)\n     } catch (error) {\n       \n     }\n"
+                },
+                {
+                    "date": 1640165997956,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,8 +15,9 @@\n   const [user, setUser] = useState()\n   const [error, seterror] = useState()\n   const [loading, setloading] = useState(false)\n   const [imgloading, setimgloading] = useState(false)\n+  const [time_selected, settime_selected] = useState({})\n   const [response, setresponse] = useState({\n     error: false,\n     message: null\n   })\n@@ -200,15 +201,20 @@\n   const updateAvailbility = async()=>{\n     setloading(true)\n     try {\n       let date_ = date.toLocaleDateString();\n-      console.log(date_)\n+      let times = await getTimeSelected();\n+      console.log(times)\n     } catch (error) {\n       \n     }\n     setloading(false)\n   }\n \n+  const getTimeSelected = async()=>{\n+\n+  }\n+\n   return(\n     <Layout style={{ flex: 1 }}>\n       <SafeAreaView style={{flex: 1}}>\n         <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640166323391,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,8 +31,26 @@\n     gender: '',\n     phoneNumber: ''\n   })\n \n+  const list_time = [\n+    '06:00 - 07:00',\n+    '07:00 - 08:00',\n+    '08:00 - 09:00',\n+    '09:00 - 10:00',\n+    '10:00 - 11:00',\n+    '11:00 - 12:00',\n+    '12:00 - 13:00',\n+    '13:00 - 14:00',\n+    '14:00 - 15:00',\n+    '15:00 - 16:00',\n+    '16:00 - 17:00',\n+    '17:00 - 18:00',\n+    '18:00 - 19:00',\n+    '19:00 - 20:00',\n+    '20:00 - 21:00',\n+  ];\n+\n   const logout = async ()=>{\n     await AsyncStorage.removeItem('_email')\n     await AsyncStorage.removeItem('_accesstoken')\n     navigation.goBack()\n"
+                },
+                {
+                    "date": 1640166352682,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -340,20 +340,8 @@\n               <Button style={{flex: 1, marginHorizontal: 10}} size={'small'} appearance={'outline'}>1100-1200</Button>\n               <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1200-1300</Button>\n             </View>\n \n-            <View style={{flexDirection: 'row', marginHorizontal: 15, marginTop: 15}}>\n-              <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1300-1400</Button>\n-              <Button style={{flex: 1, marginHorizontal: 10}} size={'small'} appearance={'outline'}>1400-1500</Button>\n-              <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1500-1600</Button>\n-            </View>\n-\n-            <View style={{flexDirection: 'row', marginHorizontal: 15, marginVertical: 15}}>\n-              <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1600-1700</Button>\n-              <Button style={{flex: 1, marginHorizontal: 10}} size={'small'} appearance={'outline'}>1700-1800</Button>\n-              <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1800-1900</Button>\n-            </View>\n-\n             <View>\n               <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n             </View>\n           </ScrollView>\n"
+                },
+                {
+                    "date": 1640166524280,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import React, { useEffect, useState } from 'react';\n-import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator } from 'react-native';\n+import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';\n import * as Reuse from '../components/reusables'\n import AsyncStorage from '@react-native-async-storage/async-storage';\n import * as API from '../api';\n import DocumentPicker from 'react-native-document-picker'\n@@ -49,8 +49,14 @@\n     '19:00 - 20:00',\n     '20:00 - 21:00',\n   ];\n \n+  const renderTime = (index)=>{\n+    return (<View>\n+      <Text>aaa</Text>\n+    </View>);\n+  }\n+\n   const logout = async ()=>{\n     await AsyncStorage.removeItem('_email')\n     await AsyncStorage.removeItem('_accesstoken')\n     navigation.goBack()\n@@ -328,20 +334,14 @@\n               onSelect={setdate}\n               min={new Date()}\n               style={{margin: 15, alignSelf: 'center'}}/>\n \n-            <View style={{flexDirection: 'row', marginHorizontal: 15}}>\n-              <Button style={{flex: 1}} size={'small'} appearance={selected.includes(1) ? 'filled' : 'outline'}>0600-0700</Button>\n-              <Button style={{flex: 1, marginHorizontal: 10}} size={'small'} appearance={'outline'}>0800-0900</Button>\n-              <Button style={{flex: 1}} size={'small'} appearance={'outline'}>0900-1000</Button>\n-            </View>\n+            <FlatList\n+            data={list_time}\n+            numColumns={3}\n+            renderItem={renderTime}\n+            />\n \n-            <View style={{flexDirection: 'row', marginHorizontal: 15, marginTop: 15}}>\n-              <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1000-1100</Button>\n-              <Button style={{flex: 1, marginHorizontal: 10}} size={'small'} appearance={'outline'}>1100-1200</Button>\n-              <Button style={{flex: 1}} size={'small'} appearance={'outline'}>1200-1300</Button>\n-            </View>\n-\n             <View>\n               <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n             </View>\n           </ScrollView>\n"
+                },
+                {
+                    "date": 1640166542701,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -336,8 +336,9 @@\n               style={{margin: 15, alignSelf: 'center'}}/>\n \n             <FlatList\n             data={list_time}\n+            style={{width: '100$'}}\n             numColumns={3}\n             renderItem={renderTime}\n             />\n \n"
+                },
+                {
+                    "date": 1640166549500,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -336,9 +336,9 @@\n               style={{margin: 15, alignSelf: 'center'}}/>\n \n             <FlatList\n             data={list_time}\n-            style={{width: '100$'}}\n+            style={{width: '100%'}}\n             numColumns={3}\n             renderItem={renderTime}\n             />\n \n"
+                },
+                {
+                    "date": 1640166597575,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,11 +50,12 @@\n     '20:00 - 21:00',\n   ];\n \n   const renderTime = (index)=>{\n-    return (<View>\n-      <Text>aaa</Text>\n-    </View>);\n+    console.log(index)\n+    return (\n+      <Button>a</Button>\n+    );\n   }\n \n   const logout = async ()=>{\n     await AsyncStorage.removeItem('_email')\n"
+                },
+                {
+                    "date": 1640166644536,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,10 +49,10 @@\n     '19:00 - 20:00',\n     '20:00 - 21:00',\n   ];\n \n-  const renderTime = (index)=>{\n-    console.log(index)\n+  const renderTime = ({index, item})=>{\n+    console.log(item)\n     return (\n       <Button>a</Button>\n     );\n   }\n"
+                },
+                {
+                    "date": 1640166662414,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button>a</Button>\n+      <Button style={{width: '100%'}}>a</Button>\n     );\n   }\n \n   const logout = async ()=>{\n"
+                },
+                {
+                    "date": 1640166672253,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button style={{width: '100%'}}>a</Button>\n+      <Button>a</Button>\n     );\n   }\n \n   const logout = async ()=>{\n"
+                },
+                {
+                    "date": 1640166690121,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,9 +337,9 @@\n               style={{margin: 15, alignSelf: 'center'}}/>\n \n             <FlatList\n             data={list_time}\n-            style={{width: '100%'}}\n+            style={{width: '100%', backgroundColor: 'red'}}\n             numColumns={3}\n             renderItem={renderTime}\n             />\n \n"
+                },
+                {
+                    "date": 1640166717413,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button>a</Button>\n+      <Button>{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n"
+                },
+                {
+                    "date": 1640166739143,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button>{item}</Button>\n+      <Button style={{margin: 10}}>{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n@@ -337,9 +337,9 @@\n               style={{margin: 15, alignSelf: 'center'}}/>\n \n             <FlatList\n             data={list_time}\n-            style={{width: '100%', backgroundColor: 'red'}}\n+            style={{width: '100%'}}\n             numColumns={3}\n             renderItem={renderTime}\n             />\n \n"
+                },
+                {
+                    "date": 1640166750344,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button style={{margin: 10}}>{item}</Button>\n+      <Button style={{margin: 2}}>{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n"
+                },
+                {
+                    "date": 1640166767984,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button style={{margin: 2}}>{item}</Button>\n+      <Button style={{margin: 2, width: '90%'}}>{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n"
+                },
+                {
+                    "date": 1640166775368,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button style={{margin: 2, width: '90%'}}>{item}</Button>\n+      <Button style={{margin: 1}}>{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n"
+                },
+                {
+                    "date": 1640166782582,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,9 +337,9 @@\n               style={{margin: 15, alignSelf: 'center'}}/>\n \n             <FlatList\n             data={list_time}\n-            style={{width: '100%'}}\n+            \n             numColumns={3}\n             renderItem={renderTime}\n             />\n \n"
+                },
+                {
+                    "date": 1640166792444,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,9 +337,9 @@\n               style={{margin: 15, alignSelf: 'center'}}/>\n \n             <FlatList\n             data={list_time}\n-            \n+            style={{width: '90%'}}\n             numColumns={3}\n             renderItem={renderTime}\n             />\n \n"
+                },
+                {
+                    "date": 1640166801880,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button style={{margin: 1}}>{item}</Button>\n+      <Button>{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n@@ -337,9 +337,9 @@\n               style={{margin: 15, alignSelf: 'center'}}/>\n \n             <FlatList\n             data={list_time}\n-            style={{width: '90%'}}\n+            style={{width: '100%'}}\n             numColumns={3}\n             renderItem={renderTime}\n             />\n \n"
+                },
+                {
+                    "date": 1640166810864,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button>{item}</Button>\n+      <Button style={{margin: 0.5}}>{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n"
+                },
+                {
+                    "date": 1640166858036,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -343,8 +343,9 @@\n             renderItem={renderTime}\n             />\n \n             <View>\n+              <Text />\n               <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n             </View>\n           </ScrollView>\n           }\n"
+                },
+                {
+                    "date": 1640166950630,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button style={{margin: 0.5}}>{item}</Button>\n+      <Button style={{margin: 0.5}} appearance=\"outline\">{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n"
+                },
+                {
+                    "date": 1640167079629,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button style={{margin: 0.5}} appearance=\"outline\">{item}</Button>\n+      <Button style={{margin: 0.5}} appearance={getIfSelected ? \"filled\" : \"outline\"}>{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n@@ -238,8 +238,12 @@\n   const getTimeSelected = async()=>{\n \n   }\n \n+  const getIfSelected = (time)=>{\n+    return true;\n+  }\n+\n   return(\n     <Layout style={{ flex: 1 }}>\n       <SafeAreaView style={{flex: 1}}>\n         <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640167085510,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -239,9 +239,9 @@\n \n   }\n \n   const getIfSelected = (time)=>{\n-    return true;\n+    return false;\n   }\n \n   return(\n     <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640167176191,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,9 +52,9 @@\n \n   const renderTime = ({index, item})=>{\n     console.log(item)\n     return (\n-      <Button style={{margin: 0.5}} appearance={getIfSelected ? \"filled\" : \"outline\"}>{item}</Button>\n+      <Button style={{margin: 0.5}} appearance={(getIfSelected(item) == true) ? \"filled\" : \"outline\"}>{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n"
+                },
+                {
+                    "date": 1640167183909,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -235,9 +235,9 @@\n     setloading(false)\n   }\n \n   const getTimeSelected = async()=>{\n-\n+    return false;\n   }\n \n   const getIfSelected = (time)=>{\n     return false;\n"
+                },
+                {
+                    "date": 1640167194746,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -239,9 +239,9 @@\n     return false;\n   }\n \n   const getIfSelected = (time)=>{\n-    return false;\n+    return true;\n   }\n \n   return(\n     <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640167200660,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -239,9 +239,9 @@\n     return false;\n   }\n \n   const getIfSelected = (time)=>{\n-    return true;\n+    return false;\n   }\n \n   return(\n     <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640167374914,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -239,9 +239,13 @@\n     return false;\n   }\n \n   const getIfSelected = (time)=>{\n-    return false;\n+    let date_ = (date).toLocaleDateString()\n+    if(time_selected[date_] == null){\n+      return false;\n+    }\n+    \n   }\n \n   return(\n     <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640167532779,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,11 +50,11 @@\n     '20:00 - 21:00',\n   ];\n \n   const renderTime = ({index, item})=>{\n-    console.log(item)\n+    // console.log(item)\n     return (\n-      <Button style={{margin: 0.5}} appearance={(getIfSelected(item) == true) ? \"filled\" : \"outline\"}>{item}</Button>\n+      <Button style={{margin: 0.5}} onPress={()=>addToSelected(item)} appearance={(getIfSelected(item) == true) ? \"filled\" : \"outline\"}>{item}</Button>\n     );\n   }\n \n   const logout = async ()=>{\n@@ -243,11 +243,18 @@\n     let date_ = (date).toLocaleDateString()\n     if(time_selected[date_] == null){\n       return false;\n     }\n+\n+    let d = time_selected[date_];\n+\n     \n   }\n \n+  const addToSelected = (item)=>{\n+    console.log(item)\n+  }\n+\n   return(\n     <Layout style={{ flex: 1 }}>\n       <SafeAreaView style={{flex: 1}}>\n         <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640167739031,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -250,9 +250,19 @@\n     \n   }\n \n   const addToSelected = (item)=>{\n-    console.log(item)\n+    let date_ = (date).toLocaleDateString()\n+    if(time_selected[date_] == null){\n+      let new_time = {\n+        date_ : [item]\n+      }\n+\n+      console.log(new_time)\n+    }else{\n+\n+    }\n+\n   }\n \n   return(\n     <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640167781656,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -253,9 +253,10 @@\n   const addToSelected = (item)=>{\n     let date_ = (date).toLocaleDateString()\n     if(time_selected[date_] == null){\n       let new_time = {\n-        date_ : [item]\n+        date: date_,\n+        times : [item]\n       }\n \n       console.log(new_time)\n     }else{\n"
+                },
+                {
+                    "date": 1640167836754,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -257,9 +257,10 @@\n         date: date_,\n         times : [item]\n       }\n \n-      console.log(new_time)\n+      // console.log(new_time)\n+      settime_selected(new_time);\n     }else{\n \n     }\n \n"
+                },
+                {
+                    "date": 1640167878211,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -256,13 +256,11 @@\n       let new_time = {\n         date: date_,\n         times : [item]\n       }\n-\n-      // console.log(new_time)\n       settime_selected(new_time);\n     }else{\n-\n+      console.log(time_selected)\n     }\n \n   }\n \n"
+                },
+                {
+                    "date": 1640167900458,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -258,11 +258,13 @@\n         times : [item]\n       }\n       settime_selected(new_time);\n     }else{\n-      console.log(time_selected)\n+      \n     }\n \n+    console.log(time_selected)\n+\n   }\n \n   return(\n     <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640168490800,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n   const [user, setUser] = useState()\n   const [error, seterror] = useState()\n   const [loading, setloading] = useState(false)\n   const [imgloading, setimgloading] = useState(false)\n-  const [time_selected, settime_selected] = useState({})\n+  const [time_selected, settime_selected] = useState([])\n   const [response, setresponse] = useState({\n     error: false,\n     message: null\n   })\n@@ -251,19 +251,27 @@\n   }\n \n   const addToSelected = (item)=>{\n     let date_ = (date).toLocaleDateString()\n+    let index = time_selected.map((it, index)=>{\n+      if(it.date == date_){\n+        return index;\n+      }\n+    });\n+\n+    console.log(index)\n+\n     if(time_selected[date_] == null){\n-      let new_time = {\n+      let new_time = [{\n         date: date_,\n         times : [item]\n-      }\n-      settime_selected(new_time);\n+      }]\n+      // settime_selected(new_time);\n     }else{\n       \n     }\n \n-    console.log(time_selected)\n+    // console.log()\n \n   }\n \n   return(\n"
+                },
+                {
+                    "date": 1640168608503,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -251,13 +251,15 @@\n   }\n \n   const addToSelected = (item)=>{\n     let date_ = (date).toLocaleDateString()\n-    let index = time_selected.map((it, index)=>{\n-      if(it.date == date_){\n-        return index;\n+    let index = null;\n+    for(var i = 0; i < time_selected ; i++){\n+      if(time_selected[i].date == date_){\n+        index = i;\n+        continue;\n       }\n-    });\n+    }\n \n     console.log(index)\n \n     if(time_selected[date_] == null){\n"
+                },
+                {
+                    "date": 1640168617473,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -261,9 +261,9 @@\n     }\n \n     console.log(index)\n \n-    if(time_selected[date_] == null){\n+    if(index == null){\n       let new_time = [{\n         date: date_,\n         times : [item]\n       }]\n"
+                },
+                {
+                    "date": 1640168779928,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -266,9 +266,11 @@\n       let new_time = [{\n         date: date_,\n         times : [item]\n       }]\n-      // settime_selected(new_time);\n+\n+      \n+      settime_selected(new_time.concat(time_selected));\n     }else{\n       \n     }\n \n"
+                },
+                {
+                    "date": 1640168791755,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -259,9 +259,9 @@\n         continue;\n       }\n     }\n \n-    console.log(index)\n+    // console.log(index)\n \n     if(index == null){\n       let new_time = [{\n         date: date_,\n@@ -273,9 +273,9 @@\n     }else{\n       \n     }\n \n-    // console.log()\n+    console.log(time_selected)\n \n   }\n \n   return(\n"
+                },
+                {
+                    "date": 1640168863348,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -259,9 +259,10 @@\n         continue;\n       }\n     }\n \n-    // console.log(index)\n+    console.log(index)\n+    return;\n \n     if(index == null){\n       let new_time = [{\n         date: date_,\n"
+                },
+                {
+                    "date": 1640168900247,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -257,8 +257,10 @@\n       if(time_selected[i].date == date_){\n         index = i;\n         continue;\n       }\n+\n+      console.log(i)\n     }\n \n     console.log(index)\n     return;\n"
+                },
+                {
+                    "date": 1640168920234,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -258,9 +258,9 @@\n         index = i;\n         continue;\n       }\n \n-      console.log(i)\n+      console.log(time_selected)\n     }\n \n     console.log(index)\n     return;\n"
+                },
+                {
+                    "date": 1640168950000,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -258,11 +258,12 @@\n         index = i;\n         continue;\n       }\n \n-      console.log(time_selected)\n     }\n \n+    console.log(time_selected)\n+\n     console.log(index)\n     return;\n \n     if(index == null){\n"
+                },
+                {
+                    "date": 1640168971832,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -252,18 +252,16 @@\n \n   const addToSelected = (item)=>{\n     let date_ = (date).toLocaleDateString()\n     let index = null;\n-    for(var i = 0; i < time_selected ; i++){\n+    for(var i = 0; i < time_selected.length ; i++){\n       if(time_selected[i].date == date_){\n         index = i;\n         continue;\n       }\n \n     }\n \n-    console.log(time_selected)\n-\n     console.log(index)\n     return;\n \n     if(index == null){\n"
+                },
+                {
+                    "date": 1640169002401,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -260,18 +260,13 @@\n       }\n \n     }\n \n-    console.log(index)\n-    return;\n-\n     if(index == null){\n       let new_time = [{\n         date: date_,\n         times : [item]\n       }]\n-\n-      \n       settime_selected(new_time.concat(time_selected));\n     }else{\n       \n     }\n"
+                },
+                {
+                    "date": 1640169454683,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -267,12 +267,26 @@\n         times : [item]\n       }]\n       settime_selected(new_time.concat(time_selected));\n     }else{\n-      \n+      // check if time exist\n+      let index1 = null;\n+      for(var j = 0; j < (time_selected[index].times).length ; j++){\n+        if( ((time_selected[index].times)[j]) == item){\n+          index1 = j;\n+          continue;\n+        }\n+      }\n+      if(index1 == null){\n+        // add time\n+        let old_time = time_selected;\n+        console.log(old_time[index].times).concat([item]);\n+      }else{\n+        // ignore time already exist\n+      }\n     }\n \n-    console.log(time_selected)\n+    // console.log(time_selected)\n \n   }\n \n   return(\n"
+                },
+                {
+                    "date": 1640169506807,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -278,9 +278,9 @@\n       }\n       if(index1 == null){\n         // add time\n         let old_time = time_selected;\n-        console.log(old_time[index].times).concat([item]);\n+        console.log([item].concat(old_time[index].times));\n       }else{\n         // ignore time already exist\n       }\n     }\n"
+                },
+                {
+                    "date": 1640169635669,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -278,9 +278,12 @@\n       }\n       if(index1 == null){\n         // add time\n         let old_time = time_selected;\n-        console.log([item].concat(old_time[index].times));\n+        // old\n+        old_time[index].times = ([item].concat(old_time[index].times));\n+        console.log(old_time)\n+        \n       }else{\n         // ignore time already exist\n       }\n     }\n"
+                },
+                {
+                    "date": 1640169684364,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -280,10 +280,10 @@\n         // add time\n         let old_time = time_selected;\n         // old\n         old_time[index].times = ([item].concat(old_time[index].times));\n-        console.log(old_time)\n-        \n+        // console.log(old_time)\n+        settime_selected(old_time)\n       }else{\n         // ignore time already exist\n       }\n     }\n"
+                },
+                {
+                    "date": 1640169703794,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -287,12 +287,12 @@\n         // ignore time already exist\n       }\n     }\n \n-    // console.log(time_selected)\n-\n   }\n \n+  console.log(time_selected)\n+\n   return(\n     <Layout style={{ flex: 1 }}>\n       <SafeAreaView style={{flex: 1}}>\n         <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640169712679,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -289,9 +289,9 @@\n     }\n \n   }\n \n-  console.log(time_selected)\n+  // console.log(time_selected)\n \n   return(\n     <Layout style={{ flex: 1 }}>\n       <SafeAreaView style={{flex: 1}}>\n"
+                },
+                {
+                    "date": 1640169848028,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -238,15 +238,36 @@\n   const getTimeSelected = async()=>{\n     return false;\n   }\n \n-  const getIfSelected = (time)=>{\n+  const getIfSelected = (item)=>{\n     let date_ = (date).toLocaleDateString()\n-    if(time_selected[date_] == null){\n-      return false;\n+    let index = null;\n+    for(var i = 0; i < time_selected.length ; i++){\n+      if(time_selected[i].date == date_){\n+        index = i;\n+        continue;\n+      }\n+\n     }\n \n-    let d = time_selected[date_];\n+    if(index == null){\n+      return false\n+    }else{\n+      // check if time exist\n+      let index1 = null;\n+      for(var j = 0; j < (time_selected[index].times).length ; j++){\n+        if( ((time_selected[index].times)[j]) == item){\n+          index1 = j;\n+          continue;\n+        }\n+      }\n+      if(index1 == null){\n+        return false\n+      }else{\n+        return true\n+      }\n+    }\n \n     \n   }\n \n"
+                },
+                {
+                    "date": 1640169941481,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,9 +31,9 @@\n     gender: '',\n     phoneNumber: ''\n   })\n \n-  const list_time = [\n+  const [list_time, setlist_time] = useState([\n     '06:00 - 07:00',\n     '07:00 - 08:00',\n     '08:00 - 09:00',\n     '09:00 - 10:00',\n@@ -47,9 +47,9 @@\n     '17:00 - 18:00',\n     '18:00 - 19:00',\n     '19:00 - 20:00',\n     '20:00 - 21:00',\n-  ];\n+  ])\n \n   const renderTime = ({index, item})=>{\n     // console.log(item)\n     return (\n"
+                },
+                {
+                    "date": 1640169985696,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -308,8 +308,10 @@\n         // ignore time already exist\n       }\n     }\n \n+    setlist_time(list_time)\n+\n   }\n \n   // console.log(time_selected)\n \n"
+                },
+                {
+                    "date": 1640170326916,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -416,8 +416,9 @@\n             data={list_time}\n             style={{width: '100%'}}\n             numColumns={3}\n             renderItem={renderTime}\n+            \n             />\n \n             <View>\n               <Text />\n"
+                },
+                {
+                    "date": 1640170486313,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -416,9 +416,9 @@\n             data={list_time}\n             style={{width: '100%'}}\n             numColumns={3}\n             renderItem={renderTime}\n-            \n+            extraData={list_time}\n             />\n \n             <View>\n               <Text />\n"
+                },
+                {
+                    "date": 1640170540239,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -308,8 +308,9 @@\n         // ignore time already exist\n       }\n     }\n \n+    setlist_time([])\n     setlist_time(list_time)\n \n   }\n \n"
+                },
+                {
+                    "date": 1640170667198,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -418,8 +418,9 @@\n             style={{width: '100%'}}\n             numColumns={3}\n             renderItem={renderTime}\n             extraData={list_time}\n+            keyExtractor={item => item.id}\n             />\n \n             <View>\n               <Text />\n"
+                },
+                {
+                    "date": 1640170984413,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -305,8 +305,23 @@\n         // console.log(old_time)\n         settime_selected(old_time)\n       }else{\n         // ignore time already exist\n+        // pop time out\n+\n+        // add time\n+        let old_time = time_selected;\n+        let new_time = [];\n+        let count = 0;\n+        for(var p = 0 ; p < (old_time[index].times).length; p++){\n+          if(item != (old_time[index].times)[p] ){\n+            new_time[count] = (old_time[index].times)[p];\n+            count++;\n+          }\n+        }\n+        old_time[index].times = new_time;\n+        // console.log(old_time)\n+        settime_selected(old_time)\n       }\n     }\n \n     setlist_time([])\n"
+                },
+                {
+                    "date": 1640171294974,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,9 +49,9 @@\n     '19:00 - 20:00',\n     '20:00 - 21:00',\n   ])\n \n-  const renderTime = ({index, item})=>{\n+  const renderTime = ({item})=>{\n     // console.log(item)\n     return (\n       <Button style={{margin: 0.5}} onPress={()=>addToSelected(item)} appearance={(getIfSelected(item) == true) ? \"filled\" : \"outline\"}>{item}</Button>\n     );\n@@ -436,8 +436,16 @@\n             extraData={list_time}\n             keyExtractor={item => item.id}\n             />\n \n+            <View style={{flex: 1}}>\n+              {\n+                list_time.map(item=>{\n+                  <View style={{flex: 0.3}}>{renderTime({time: item})}</View>\n+                })\n+              }\n+            </View>\n+\n             <View>\n               <Text />\n               <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n             </View>\n"
+                },
+                {
+                    "date": 1640171332699,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -439,9 +439,9 @@\n \n             <View style={{flex: 1}}>\n               {\n                 list_time.map(item=>{\n-                  <View style={{flex: 0.3}}>{renderTime({time: item})}</View>\n+                  return <View style={{flex: 0.3}}>{renderTime({time: item})}</View>\n                 })\n               }\n             </View>\n \n"
+                },
+                {
+                    "date": 1640171366838,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -436,9 +436,9 @@\n             extraData={list_time}\n             keyExtractor={item => item.id}\n             />\n \n-            <View style={{flex: 1}}>\n+            <View style={{flex: 1, flexDirection: 'row'}}>\n               {\n                 list_time.map(item=>{\n                   return <View style={{flex: 0.3}}>{renderTime({time: item})}</View>\n                 })\n"
+                },
+                {
+                    "date": 1640171481449,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -435,16 +435,16 @@\n             renderItem={renderTime}\n             extraData={list_time}\n             keyExtractor={item => item.id}\n             />\n-\n+{/* \n             <View style={{flex: 1, flexDirection: 'row'}}>\n               {\n                 list_time.map(item=>{\n                   return <View style={{flex: 0.3}}>{renderTime({time: item})}</View>\n                 })\n               }\n-            </View>\n+            </View> */}\n \n             <View>\n               <Text />\n               <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n"
+                },
+                {
+                    "date": 1640171514579,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,8 +49,12 @@\n     '19:00 - 20:00',\n     '20:00 - 21:00',\n   ])\n \n+  useEffect(()=>{\n+    setlist_time(list_time)\n+  }, [list_time])\n+\n   const renderTime = ({item})=>{\n     // console.log(item)\n     return (\n       <Button style={{margin: 0.5}} onPress={()=>addToSelected(item)} appearance={(getIfSelected(item) == true) ? \"filled\" : \"outline\"}>{item}</Button>\n"
+                },
+                {
+                    "date": 1640171770048,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -439,16 +439,16 @@\n             renderItem={renderTime}\n             extraData={list_time}\n             keyExtractor={item => item.id}\n             />\n-{/* \n+\n             <View style={{flex: 1, flexDirection: 'row'}}>\n               {\n                 list_time.map(item=>{\n-                  return <View style={{flex: 0.3}}>{renderTime({time: item})}</View>\n+                  return <View style={{flex: 0.3}}>{renderTime({item: item})}</View>\n                 })\n               }\n-            </View> */}\n+            </View>\n \n             <View>\n               <Text />\n               <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n"
+                },
+                {
+                    "date": 1640171785870,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -440,12 +440,12 @@\n             extraData={list_time}\n             keyExtractor={item => item.id}\n             />\n \n-            <View style={{flex: 1, flexDirection: 'row'}}>\n+            <View style={{flex: 1,}}>\n               {\n                 list_time.map(item=>{\n-                  return <View style={{flex: 0.3}}>{renderTime({item: item})}</View>\n+                  return <View style={{flex: 1}}>{renderTime({item: item})}</View>\n                 })\n               }\n             </View>\n \n"
+                },
+                {
+                    "date": 1640171857004,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,9 +50,10 @@\n     '20:00 - 21:00',\n   ])\n \n   useEffect(()=>{\n-    setlist_time(list_time)\n+    // setlist_time(list_time)\n+    setloading(false)\n   }, [list_time])\n \n   const renderTime = ({item})=>{\n     // console.log(item)\n"
+                },
+                {
+                    "date": 1640171883922,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -328,9 +328,9 @@\n         settime_selected(old_time)\n       }\n     }\n \n-    setlist_time([])\n+    // setlist_time([])\n     setlist_time(list_time)\n \n   }\n \n"
+                },
+                {
+                    "date": 1640171908435,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -51,9 +51,9 @@\n   ])\n \n   useEffect(()=>{\n     // setlist_time(list_time)\n-    setloading(false)\n+    setloading(true)\n   }, [list_time])\n \n   const renderTime = ({item})=>{\n     // console.log(item)\n@@ -328,9 +328,9 @@\n         settime_selected(old_time)\n       }\n     }\n \n-    // setlist_time([])\n+    setlist_time([])\n     setlist_time(list_time)\n \n   }\n \n"
+                },
+                {
+                    "date": 1640172096659,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -51,9 +51,9 @@\n   ])\n \n   useEffect(()=>{\n     // setlist_time(list_time)\n-    setloading(true)\n+    // setloading(true)\n   }, [list_time])\n \n   const renderTime = ({item})=>{\n     // console.log(item)\n@@ -328,9 +328,9 @@\n         settime_selected(old_time)\n       }\n     }\n \n-    setlist_time([])\n+    setloading(true)\n     setlist_time(list_time)\n \n   }\n \n"
+                },
+                {
+                    "date": 1640172180500,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -51,10 +51,10 @@\n   ])\n \n   useEffect(()=>{\n     // setlist_time(list_time)\n-    // setloading(true)\n-  }, [list_time])\n+    setloading(true)\n+  }, [time_selected, list_time])\n \n   const renderTime = ({item})=>{\n     // console.log(item)\n     return (\n"
+                },
+                {
+                    "date": 1640172236240,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,8 +52,10 @@\n \n   useEffect(()=>{\n     // setlist_time(list_time)\n     setloading(true)\n+    setloading(false)\n+    console.log('reached')\n   }, [time_selected, list_time])\n \n   const renderTime = ({item})=>{\n     // console.log(item)\n"
+                },
+                {
+                    "date": 1640172291138,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -330,9 +330,9 @@\n         settime_selected(old_time)\n       }\n     }\n \n-    setloading(true)\n+    setlist_time([])\n     setlist_time(list_time)\n \n   }\n \n"
+                },
+                {
+                    "date": 1640172474728,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import React, { useEffect, useState } from 'react';\n+import React, { useEffect, useState, useRef } from 'react';\n import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';\n import * as Reuse from '../components/reusables'\n import AsyncStorage from '@react-native-async-storage/async-storage';\n import * as API from '../api';\n@@ -49,14 +49,17 @@\n     '19:00 - 20:00',\n     '20:00 - 21:00',\n   ])\n \n+  const list_time_ref = useRef(null);\n+  list_time_ref.current = new Date();\n+\n   useEffect(()=>{\n     // setlist_time(list_time)\n     setloading(true)\n     setloading(false)\n     console.log('reached')\n-  }, [time_selected, list_time])\n+  }, [time_selected, list_time, list_time_ref.current])\n \n   const renderTime = ({item})=>{\n     // console.log(item)\n     return (\n@@ -332,8 +335,9 @@\n     }\n \n     setlist_time([])\n     setlist_time(list_time)\n+    list_time_ref.current = new Date();\n \n   }\n \n   // console.log(time_selected)\n"
+                },
+                {
+                    "date": 1640172568683,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -334,9 +334,9 @@\n       }\n     }\n \n     setlist_time([])\n-    setlist_time(list_time)\n+    // setlist_time(list_time)\n     list_time_ref.current = new Date();\n \n   }\n \n"
+                },
+                {
+                    "date": 1640172655704,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -333,10 +333,14 @@\n         settime_selected(old_time)\n       }\n     }\n \n+    const new_t = list_time;\n     setlist_time([])\n-    // setlist_time(list_time)\n+    setTimeout(()=>{\n+      setlist_time(new_t)\n+    }, 2000)\n+    \n     list_time_ref.current = new Date();\n \n   }\n \n"
+                },
+                {
+                    "date": 1640172665291,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,9 +46,9 @@\n     '16:00 - 17:00',\n     '17:00 - 18:00',\n     '18:00 - 19:00',\n     '19:00 - 20:00',\n-    '20:00 - 21:00',\n+    '20:00 - 21:00'\n   ])\n \n   const list_time_ref = useRef(null);\n   list_time_ref.current = new Date();\n"
+                },
+                {
+                    "date": 1640172710888,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,9 +337,9 @@\n     const new_t = list_time;\n     setlist_time([])\n     setTimeout(()=>{\n       setlist_time(new_t)\n-    }, 2000)\n+    }, 900)\n     \n     list_time_ref.current = new Date();\n \n   }\n"
+                },
+                {
+                    "date": 1640172728635,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,9 +337,9 @@\n     const new_t = list_time;\n     setlist_time([])\n     setTimeout(()=>{\n       setlist_time(new_t)\n-    }, 900)\n+    }, 500)\n     \n     list_time_ref.current = new Date();\n \n   }\n"
+                },
+                {
+                    "date": 1640172751846,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -451,15 +451,15 @@\n             extraData={list_time}\n             keyExtractor={item => item.id}\n             />\n \n-            <View style={{flex: 1,}}>\n+            {/* <View style={{flex: 1,}}>\n               {\n                 list_time.map(item=>{\n                   return <View style={{flex: 1}}>{renderTime({item: item})}</View>\n                 })\n               }\n-            </View>\n+            </View> */}\n \n             <View>\n               <Text />\n               <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n"
+                },
+                {
+                    "date": 1640172768312,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,9 +337,9 @@\n     const new_t = list_time;\n     setlist_time([])\n     setTimeout(()=>{\n       setlist_time(new_t)\n-    }, 500)\n+    }, 200)\n     \n     list_time_ref.current = new Date();\n \n   }\n"
+                },
+                {
+                    "date": 1640172785472,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,9 +337,9 @@\n     const new_t = list_time;\n     setlist_time([])\n     setTimeout(()=>{\n       setlist_time(new_t)\n-    }, 200)\n+    }, 50)\n     \n     list_time_ref.current = new Date();\n \n   }\n"
+                },
+                {
+                    "date": 1640172799268,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,9 +337,9 @@\n     const new_t = list_time;\n     setlist_time([])\n     setTimeout(()=>{\n       setlist_time(new_t)\n-    }, 50)\n+    }, 10)\n     \n     list_time_ref.current = new Date();\n \n   }\n"
+                },
+                {
+                    "date": 1640172816272,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,9 +337,9 @@\n     const new_t = list_time;\n     setlist_time([])\n     setTimeout(()=>{\n       setlist_time(new_t)\n-    }, 10)\n+    }, 3)\n     \n     list_time_ref.current = new Date();\n \n   }\n"
+                },
+                {
+                    "date": 1640172863179,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,9 @@\n import * as API from '../api';\n import DocumentPicker from 'react-native-document-picker'\n import { Avatar, Text, Layout, Input, Button, TabBar, Tab, Calendar,Modal, Card, Icon } from '@ui-kitten/components';\n import firebase from 'firebase';\n+import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen';\n \n const Account = ({navigation}) =>{\n   \n   const [tab, settab] = useState(0)\n@@ -333,16 +334,20 @@\n         settime_selected(old_time)\n       }\n     }\n \n+    reload();\n+    \n+    list_time_ref.current = new Date();\n+\n+  }\n+\n+  const reload = async()=>{\n     const new_t = list_time;\n     setlist_time([])\n     setTimeout(()=>{\n       setlist_time(new_t)\n     }, 3)\n-    \n-    list_time_ref.current = new Date();\n-\n   }\n \n   // console.log(time_selected)\n \n"
+                },
+                {
+                    "date": 1640173162642,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -334,8 +334,9 @@\n         settime_selected(old_time)\n       }\n     }\n \n+    setloading(true)\n     reload();\n     \n     list_time_ref.current = new Date();\n \n"
+                },
+                {
+                    "date": 1640175063690,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -349,9 +349,9 @@\n       setlist_time(new_t)\n     }, 3)\n   }\n \n-  // console.log(time_selected)\n+  console.log(time_selected)\n \n   return(\n     <Layout style={{ flex: 1 }}>\n       <SafeAreaView style={{flex: 1}}>\n"
+                },
+                {
+                    "date": 1640180251890,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -349,9 +349,9 @@\n       setlist_time(new_t)\n     }, 3)\n   }\n \n-  console.log(time_selected)\n+  // console.log(time_selected)\n \n   return(\n     <Layout style={{ flex: 1 }}>\n       <SafeAreaView style={{flex: 1}}>\n"
+                },
+                {
+                    "date": 1640180959772,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -236,11 +236,12 @@\n \n   const updateAvailbility = async()=>{\n     setloading(true)\n     try {\n-      let date_ = date.toLocaleDateString();\n-      let times = await getTimeSelected();\n-      console.log(times)\n+      const email = await AsyncStorage.getItem('_email')\n+\n+      await firebase.firestore().collection('newMyAvail').doc(email).set(time_selected);\n+\n     } catch (error) {\n       \n     }\n     setloading(false)\n"
+                },
+                {
+                    "date": 1640181066118,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -241,9 +241,9 @@\n \n       await firebase.firestore().collection('newMyAvail').doc(email).set(time_selected);\n \n     } catch (error) {\n-      \n+      console.log(error)\n     }\n     setloading(false)\n   }\n \n"
+                },
+                {
+                    "date": 1640181276094,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -238,9 +238,9 @@\n     setloading(true)\n     try {\n       const email = await AsyncStorage.getItem('_email')\n \n-      await firebase.firestore().collection('newMyAvail').doc(email).set(time_selected);\n+      await firebase.firestore().collection('newMyAvail').doc(email).collection(\"date\").set(time_selected);\n \n     } catch (error) {\n       console.log(error)\n     }\n"
+                },
+                {
+                    "date": 1640181340004,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -238,9 +238,9 @@\n     setloading(true)\n     try {\n       const email = await AsyncStorage.getItem('_email')\n \n-      await firebase.firestore().collection('newMyAvail').doc(email).collection(\"date\").set(time_selected);\n+      await firebase.firestore().collection('newMyAvail').doc(email).collection(\"date\").add(time_selected);\n \n     } catch (error) {\n       console.log(error)\n     }\n"
+                },
+                {
+                    "date": 1640181371603,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -238,9 +238,9 @@\n     setloading(true)\n     try {\n       const email = await AsyncStorage.getItem('_email')\n \n-      await firebase.firestore().collection('newMyAvail').doc(email).collection(\"date\").add(time_selected);\n+      await firebase.firestore().collection('newMyAvail').doc(email).set(time_selected);\n \n     } catch (error) {\n       console.log(error)\n     }\n"
+                },
+                {
+                    "date": 1640181397777,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -238,9 +238,9 @@\n     setloading(true)\n     try {\n       const email = await AsyncStorage.getItem('_email')\n \n-      await firebase.firestore().collection('newMyAvail').doc(email).set(time_selected);\n+      await firebase.firestore().collection('newMyAvail').doc(email).set({date_entry: time_selected});\n \n     } catch (error) {\n       console.log(error)\n     }\n"
+                },
+                {
+                    "date": 1640181731314,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -57,9 +57,9 @@\n   useEffect(()=>{\n     // setlist_time(list_time)\n     setloading(true)\n     setloading(false)\n-    console.log('reached')\n+    // console.log('reached')\n   }, [time_selected, list_time, list_time_ref.current])\n \n   const renderTime = ({item})=>{\n     // console.log(item)\n@@ -89,9 +89,9 @@\n       })\n \n       const userData = await API.getuserDetails();\n       \n-      console.log(userData)\n+      // console.log(userData)\n \n     })()\n \n   }, [])\n@@ -350,8 +350,36 @@\n       setlist_time(new_t)\n     }, 3)\n   }\n \n+  useEffect(() => {\n+    (async()=>{\n+      // start\n+      const email = await AsyncStorage.getItem('_email')\n+      firebase.firestore().collection('newMyAvail').doc(email).onSnapshot(snapshot=>{\n+        var r = snapshot.docs.map(doc =>{\n+            return (doc.data())\n+              \n+            // return {\n+            //     id: doc.id,\n+            //     data: (doc.data())\n+            //   }\n+          // check if data is thesame as uid\n+        //   if(my_data.uid != doc.id){\n+            \n+        //   }\n+          \n+        });\n+  \n+        // console.log('reach: ')\n+        console.log(r)\n+        \n+      }, error=>{\n+        console.log(error)\n+      });\n+      // end\n+    })()\n+  }, [])\n   // console.log(time_selected)\n \n   return(\n     <Layout style={{ flex: 1 }}>\n"
+                },
+                {
+                    "date": 1640181776550,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -355,24 +355,25 @@\n     (async()=>{\n       // start\n       const email = await AsyncStorage.getItem('_email')\n       firebase.firestore().collection('newMyAvail').doc(email).onSnapshot(snapshot=>{\n-        var r = snapshot.docs.map(doc =>{\n-            return (doc.data())\n+        console.log(snapshot)\n+        // var r = snapshot.docs.map(doc =>{\n+        //     return (doc.data())\n               \n-            // return {\n-            //     id: doc.id,\n-            //     data: (doc.data())\n-            //   }\n-          // check if data is thesame as uid\n-        //   if(my_data.uid != doc.id){\n+        //     // return {\n+        //     //     id: doc.id,\n+        //     //     data: (doc.data())\n+        //     //   }\n+        //   // check if data is thesame as uid\n+        // //   if(my_data.uid != doc.id){\n             \n-        //   }\n+        // //   }\n           \n-        });\n+        // });\n   \n-        // console.log('reach: ')\n-        console.log(r)\n+        // // console.log('reach: ')\n+        // console.log(r)\n         \n       }, error=>{\n         console.log(error)\n       });\n"
+                },
+                {
+                    "date": 1640181795869,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -355,9 +355,9 @@\n     (async()=>{\n       // start\n       const email = await AsyncStorage.getItem('_email')\n       firebase.firestore().collection('newMyAvail').doc(email).onSnapshot(snapshot=>{\n-        console.log(snapshot)\n+        console.log(snapshot.data())\n         // var r = snapshot.docs.map(doc =>{\n         //     return (doc.data())\n               \n         //     // return {\n"
+                },
+                {
+                    "date": 1640181825116,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -355,25 +355,9 @@\n     (async()=>{\n       // start\n       const email = await AsyncStorage.getItem('_email')\n       firebase.firestore().collection('newMyAvail').doc(email).onSnapshot(snapshot=>{\n-        console.log(snapshot.data())\n-        // var r = snapshot.docs.map(doc =>{\n-        //     return (doc.data())\n-              \n-        //     // return {\n-        //     //     id: doc.id,\n-        //     //     data: (doc.data())\n-        //     //   }\n-        //   // check if data is thesame as uid\n-        // //   if(my_data.uid != doc.id){\n-            \n-        // //   }\n-          \n-        // });\n-  \n-        // // console.log('reach: ')\n-        // console.log(r)\n+        console.log(snapshot.data().date_entry)\n         \n       }, error=>{\n         console.log(error)\n       });\n"
+                },
+                {
+                    "date": 1640181852970,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -355,9 +355,11 @@\n     (async()=>{\n       // start\n       const email = await AsyncStorage.getItem('_email')\n       firebase.firestore().collection('newMyAvail').doc(email).onSnapshot(snapshot=>{\n-        console.log(snapshot.data().date_entry)\n+        console.log(snapshot.data().date_entry);\n+\n+        settime_selected(snapshot.data().date_entry);\n         \n       }, error=>{\n         console.log(error)\n       });\n"
+                },
+                {
+                    "date": 1640181994888,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import React, { useEffect, useState, useRef } from 'react';\n-import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';\n+import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList, Alert } from 'react-native';\n import * as Reuse from '../components/reusables'\n import AsyncStorage from '@react-native-async-storage/async-storage';\n import * as API from '../api';\n import DocumentPicker from 'react-native-document-picker'\n@@ -240,8 +240,9 @@\n       const email = await AsyncStorage.getItem('_email')\n \n       await firebase.firestore().collection('newMyAvail').doc(email).set({date_entry: time_selected});\n \n+      Alert.alert('Availability Updated');\n     } catch (error) {\n       console.log(error)\n     }\n     setloading(false)\n"
+                },
+                {
+                    "date": 1640182261753,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -484,9 +484,9 @@\n             </View> */}\n \n             <View>\n               <Text />\n-              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>\n+              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'SAVE AVAILABILITY'}</Button>\n             </View>\n           </ScrollView>\n           }\n         </Layout>\n"
                 }
             ],
             "date": 1639062252106,

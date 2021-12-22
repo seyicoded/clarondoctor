@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import * as Reuse from '../components/reusables'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as API from '../api';
 import DocumentPicker from 'react-native-document-picker'
 import { Avatar, Text, Layout, Input, Button, TabBar, Tab, Calendar,Modal, Card, Icon } from '@ui-kitten/components';
 import firebase from 'firebase';
-import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen';
 
 const Account = ({navigation}) =>{
   
@@ -48,18 +47,8 @@ const Account = ({navigation}) =>{
     '17:00 - 18:00',
     '18:00 - 19:00',
     '19:00 - 20:00',
-    '20:00 - 21:00'
+    '20:00 - 21:00',
   ])
-
-  const list_time_ref = useRef(null);
-  list_time_ref.current = new Date();
-
-  useEffect(()=>{
-    // setlist_time(list_time)
-    setloading(true)
-    setloading(false)
-    // console.log('reached')
-  }, [time_selected, list_time, list_time_ref.current])
 
   const renderTime = ({item})=>{
     // console.log(item)
@@ -90,7 +79,7 @@ const Account = ({navigation}) =>{
 
       const userData = await API.getuserDetails();
       
-      // console.log(userData)
+      console.log(userData)
 
     })()
 
@@ -237,13 +226,11 @@ const uriToBlob = (uri) => {
   const updateAvailbility = async()=>{
     setloading(true)
     try {
-      const email = await AsyncStorage.getItem('_email')
-
-      await firebase.firestore().collection('newMyAvail').doc(email).set({date_entry: time_selected});
-
-      Alert.alert('Availability Updated');
+      let date_ = date.toLocaleDateString();
+      let times = await getTimeSelected();
+      console.log(times)
     } catch (error) {
-      console.log(error)
+      
     }
     setloading(false)
   }
@@ -337,36 +324,11 @@ const uriToBlob = (uri) => {
       }
     }
 
-    setloading(true)
-    reload();
-    
-    list_time_ref.current = new Date();
-
-  }
-
-  const reload = async()=>{
-    const new_t = list_time;
     setlist_time([])
-    setTimeout(()=>{
-      setlist_time(new_t)
-    }, 3)
+    setlist_time(list_time)
+
   }
 
-  useEffect(() => {
-    (async()=>{
-      // start
-      const email = await AsyncStorage.getItem('_email')
-      firebase.firestore().collection('newMyAvail').doc(email).onSnapshot(snapshot=>{
-        console.log(snapshot.data().date_entry);
-
-        settime_selected(snapshot.data().date_entry);
-        
-      }, error=>{
-        console.log(error)
-      });
-      // end
-    })()
-  }, [])
   // console.log(time_selected)
 
   return(
@@ -474,18 +436,18 @@ const uriToBlob = (uri) => {
             extraData={list_time}
             keyExtractor={item => item.id}
             />
-
-            {/* <View style={{flex: 1,}}>
+{/* 
+            <View style={{flex: 1, flexDirection: 'row'}}>
               {
                 list_time.map(item=>{
-                  return <View style={{flex: 1}}>{renderTime({item: item})}</View>
+                  return <View style={{flex: 0.3}}>{renderTime({time: item})}</View>
                 })
               }
             </View> */}
 
             <View>
               <Text />
-              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'SAVE AVAILABILITY'}</Button>
+              <Button disabled={loading} onPress={()=>updateAvailbility()}>{loading ? 'LOADING': 'UPDATE AVAILABILITY'}</Button>
             </View>
           </ScrollView>
           }

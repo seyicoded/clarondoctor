@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 17,
+            "activePatchIndex": 19,
             "patches": [
                 {
                     "date": 1639063336790,
@@ -76,6 +76,14 @@
                 {
                     "date": 1639410710114,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -233,11 +233,11 @@\n                 'Authorization': `Bearer ${token}`\n             }\n         })\n         data = res.data.notifications\n-        console.log(data)\n+        // console.log(data)\n     }catch(e){\n-        console.log(e)\n+        // console.log(e)\n         data = []\n     }\n \n     return data\n"
+                },
+                {
+                    "date": 1640134177632,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,30 @@\n \n let base_url = 'https://api.clarondoc.com'\n \n //authenticate doctors into the app\n+export const getuserDetails = async (email, key, auth) => {\n+    const response = await axios({\n+        method: 'GET',\n+        url: 'https://api.clarondoc.com/physicians/'+email,\n+        headers: {\n+            'Content-Type': 'application/json',\n+            'Authorization': `Bearer ${auth}`,\n+            'x-api-key': key\n+        },\n+        options: {\n+            'Content-Type': 'application/x-www-form-urlencoded'\n+        }\n+    })\n+    // console.log(response.data.physicianDetails)\n+    if(response.data.success){\n+        await AsyncStorage.setItem('user', JSON.stringify(response.data.physicianDetails))\n+    }\n+\n+    return response.data;\n+}\n+\n+//authenticate doctors into the app\n export const userDetails = async (email, key, auth) => {\n     const response = await axios({\n         method: 'GET',\n         url: 'https://api.clarondoc.com/physicians/'+email,\n"
+                },
+                {
+                    "date": 1640134234906,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,13 @@\n \n let base_url = 'https://api.clarondoc.com'\n \n //authenticate doctors into the app\n-export const getuserDetails = async (email, key, auth) => {\n+export const getuserDetails = async () => {\n+    const email = await AsyncStorage.getItem('_email')\n+    const auth = await AsyncStorage.getItem('_accesstoken')\n+    let key = await AsyncStorage.getItem('_apikey')\n+\n     const response = await axios({\n         method: 'GET',\n         url: 'https://api.clarondoc.com/physicians/'+email,\n         headers: {\n"
                 }
             ],
             "date": 1639063336790,
