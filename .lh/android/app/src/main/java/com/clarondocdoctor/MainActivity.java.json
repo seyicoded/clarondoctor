@@ -1,0 +1,18 @@
+{
+    "sourceFile": "android/app/src/main/java/com/clarondocdoctor/MainActivity.java",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1640259587714,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1640259587714,
+            "name": "Commit-0",
+            "content": "package com.clarondocdoctor;\n\nimport com.facebook.react.ReactActivity;\n\npublic class MainActivity extends ReactActivity {\n\n  /**\n   * Returns the name of the main component registered from JavaScript. This is used to schedule\n   * rendering of the component.\n   */\n  @Override\n  protected String getMainComponentName() {\n    return \"ClarondocDoctor\";\n  }\n}\n"
+        }
+    ]
+}

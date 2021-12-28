@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 14,
+            "activePatchIndex": 17,
             "patches": [
                 {
                     "date": 1638959530323,
@@ -64,6 +64,18 @@
                 {
                     "date": 1639354337023,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,10 +25,8 @@\n \n // AsyncStorage.getAllKeys();\n // AsyncStorage.clear();\n \n-firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true });\n-\n firebase.apps.length == 0 ? firebase.initializeApp({\n   apiKey: \"AIzaSyA07_A7At-J9Mu6NMXBpoLVYcrKWR3ezy4\",\n   authDomain: \"fcm-notify-db9b8.firebaseapp.com\",\n   databaseURL: \"https://fcm-notify-db9b8.firebaseio.com\",\n@@ -38,8 +36,10 @@\n   appId: \"1:77071010064:web:e693b1fa22167a00e27d95\",\n   measurementId: \"G-VWCS7XBQC3\"\n }) : null\n \n+firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true });\n+\n LogBox.ignoreAllLogs()\n const { Navigator, Screen } = createStackNavigator();\n \n export default () => {\n"
+                },
+                {
+                    "date": 1640244830072,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,8 +21,9 @@\n import AudioCall from './screens/calls/audio';\n import VideoCall from './screens/calls/video';\n import Account from './screens/account';\n import firebase from 'firebase'\n+import CodePush from 'react-native-code-push'\n \n // AsyncStorage.getAllKeys();\n // AsyncStorage.clear();\n \n"
+                },
+                {
+                    "date": 1640244994916,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,9 +42,9 @@\n \n LogBox.ignoreAllLogs()\n const { Navigator, Screen } = createStackNavigator();\n \n-export default () => {\n+const App = () => {\n   \n   const [theme, setTheme] = React.useState(useColorScheme());\n   const [logged, setlogged] = React.useState(false)\n   const [loading, setloading] = React.useState(true)\n@@ -176,5 +176,7 @@\n         </KeyboardAvoidingView>\n       </>\n     );\n   }\n-}\n\\ No newline at end of file\n+}\n+\n+export default CodePush(App);\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1640245085218,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,8 +23,10 @@\n import Account from './screens/account';\n import firebase from 'firebase'\n import CodePush from 'react-native-code-push'\n \n+let codePushOptions = { checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME };\n+\n // AsyncStorage.getAllKeys();\n // AsyncStorage.clear();\n \n firebase.apps.length == 0 ? firebase.initializeApp({\n@@ -178,5 +180,5 @@\n     );\n   }\n }\n \n-export default CodePush(App);\n\\ No newline at end of file\n+export default CodePush(codePushOptions)(App);\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1638959530323,

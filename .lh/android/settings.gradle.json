@@ -1,0 +1,18 @@
+{
+    "sourceFile": "android/settings.gradle",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1640259423362,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1640259423362,
+            "name": "Commit-0",
+            "content": "rootProject.name = 'ClarondocDoctor'\ninclude ':react-native-vector-icons'\nproject(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')\napply from: file(\"../node_modules/@react-native-community/cli-platform-android/native_modules.gradle\"); applyNativeModulesSettingsGradle(settings)\ninclude ':app', ':react-native-code-push'\nproject(':react-native-code-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-code-push/android/app')\n"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "android/app/src/main/java/com/clarondocdoctor/MainApplication.java",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1640259698485,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1640259698485,
+            "name": "Commit-0",
+            "content": "package com.clarondocdoctor;\n\nimport android.app.Application;\nimport android.content.Context;\nimport com.facebook.react.PackageList;\nimport com.facebook.react.ReactApplication;\nimport com.oblador.vectoricons.VectorIconsPackage;\nimport com.facebook.react.ReactInstanceManager;\nimport com.facebook.react.ReactNativeHost;\nimport com.facebook.react.ReactPackage;\nimport com.facebook.soloader.SoLoader;\nimport java.lang.reflect.InvocationTargetException;\nimport java.util.List;\nimport com.microsoft.codepush.react.CodePush;\n\npublic class MainApplication extends Application implements ReactApplication {\n\n  private final ReactNativeHost mReactNativeHost =\n      new ReactNativeHost(this) {\n\n        @Override\n        protected String getJSBundleFile() {\n            return CodePush.getJSBundleFile();\n        }\n        \n        @Override\n        public boolean getUseDeveloperSupport() {\n          return BuildConfig.DEBUG;\n        }\n\n        @Override\n        protected List<ReactPackage> getPackages() {\n          @SuppressWarnings(\"UnnecessaryLocalVariable\")\n          List<ReactPackage> packages = new PackageList(this).getPackages();\n          // Packages that cannot be autolinked yet can be added manually here, for example:\n          // packages.add(new MyReactNativePackage());\n          return packages;\n        }\n\n        @Override\n        protected String getJSMainModuleName() {\n          return \"index\";\n        }\n      };\n\n  @Override\n  public ReactNativeHost getReactNativeHost() {\n    return mReactNativeHost;\n  }\n\n  @Override\n  public void onCreate() {\n    super.onCreate();\n    SoLoader.init(this, /* native exopackage */ false);\n    initializeFlipper(this, getReactNativeHost().getReactInstanceManager());\n  }\n\n  /**\n   * Loads Flipper in React Native templates. Call this in the onCreate method with something like\n   * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());\n   *\n   * @param context\n   * @param reactInstanceManager\n   */\n  private static void initializeFlipper(\n      Context context, ReactInstanceManager reactInstanceManager) {\n    if (BuildConfig.DEBUG) {\n      try {\n        /*\n         We use reflection here to pick up the class that initializes Flipper,\n        since Flipper library is not available in release mode\n        */\n        Class<?> aClass = Class.forName(\"com.clarondocdoctor.ReactNativeFlipper\");\n        aClass\n            .getMethod(\"initializeFlipper\", Context.class, ReactInstanceManager.class)\n            .invoke(null, context, reactInstanceManager);\n      } catch (ClassNotFoundException e) {\n        e.printStackTrace();\n      } catch (NoSuchMethodException e) {\n        e.printStackTrace();\n      } catch (IllegalAccessException e) {\n        e.printStackTrace();\n      } catch (InvocationTargetException e) {\n        e.printStackTrace();\n      }\n    }\n  }\n}\n"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "android/app/src/main/assets/appcenter-config.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1640248631357,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1640248631357,
+            "name": "Commit-0",
+            "content": "{\n    \"app_secret\": \"e7033751-87d5-4ac1-9971-5cbfef173480\"\n}"
+        }
+    ]
+}

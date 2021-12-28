@@ -22,6 +22,9 @@ import AudioCall from './screens/calls/audio';
 import VideoCall from './screens/calls/video';
 import Account from './screens/account';
 import firebase from 'firebase'
+import CodePush from 'react-native-code-push'
+
+let codePushOptions = { checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME };
 
 // AsyncStorage.getAllKeys();
 // AsyncStorage.clear();
@@ -42,7 +45,7 @@ firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true 
 LogBox.ignoreAllLogs()
 const { Navigator, Screen } = createStackNavigator();
 
-export default () => {
+const App = () => {
   
   const [theme, setTheme] = React.useState(useColorScheme());
   const [logged, setlogged] = React.useState(false)
@@ -177,3 +180,5 @@ export default () => {
     );
   }
 }
+
+export default CodePush(codePushOptions)(App);

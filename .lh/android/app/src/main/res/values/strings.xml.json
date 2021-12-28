@@ -1,0 +1,22 @@
+{
+    "sourceFile": "android/app/src/main/res/values/strings.xml",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1640248666553,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1640270128261,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n <resources>\n     <string name=\"app_name\">ClarondocDoctor</string>\n+    <string moduleConfig=\"true\" name=\"CodePushDeploymentKey\">DeploymentKey</string>\n     <string name=\"appCenterCrashes_whenToSendCrashes\" moduleConfig=\"true\" translatable=\"false\">DO_NOT_ASK_JAVASCRIPT</string>\n     <string name=\"appCenterAnalytics_whenToEnableAnalytics\" moduleConfig=\"true\" translatable=\"false\">ALWAYS_SEND</string>\n </resources>\n"
+                }
+            ],
+            "date": 1640248666553,
+            "name": "Commit-0",
+            "content": "<resources>\n    <string name=\"app_name\">ClarondocDoctor</string>\n    <string name=\"appCenterCrashes_whenToSendCrashes\" moduleConfig=\"true\" translatable=\"false\">DO_NOT_ASK_JAVASCRIPT</string>\n    <string name=\"appCenterAnalytics_whenToEnableAnalytics\" moduleConfig=\"true\" translatable=\"false\">ALWAYS_SEND</string>\n</resources>\n"
+        }
+    ]
+}
