@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 19,
+            "activePatchIndex": 27,
             "patches": [
                 {
                     "date": 1639063336790,
@@ -84,6 +84,38 @@
                 {
                     "date": 1640134234906,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,13 @@\n \n let base_url = 'https://api.clarondoc.com'\n \n //authenticate doctors into the app\n-export const getuserDetails = async (email, key, auth) => {\n+export const getuserDetails = async () => {\n+    const email = await AsyncStorage.getItem('_email')\n+    const auth = await AsyncStorage.getItem('_accesstoken')\n+    let key = await AsyncStorage.getItem('_apikey')\n+\n     const response = await axios({\n         method: 'GET',\n         url: 'https://api.clarondoc.com/physicians/'+email,\n         headers: {\n"
+                },
+                {
+                    "date": 1641084249578,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -136,8 +136,10 @@\n                 'x-api-key': key,\n                 'Authorization': `Bearer ${token}`\n             }\n         })\n+\n+        console.log(res.data)\n         return res.data.success\n     }catch(e){\n         return false\n     }\n"
+                },
+                {
+                    "date": 1641084425062,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -125,8 +125,9 @@\n \n // respond to consultation request\n export const respondRequest = async (response, id)=>{\n     try{\n+        console.log('reach for logger')\n         let key = await AsyncStorage.getItem('_apikey')\n         let token = await AsyncStorage.getItem('_accesstoken')\n         let res = await axios.post(`${base_url}/physicians/consultations/confirm`, {\n             availability: response,\n"
+                },
+                {
+                    "date": 1641084481145,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -136,12 +136,12 @@\n             headers: {\n                 'x-api-key': key,\n                 'Authorization': `Bearer ${token}`\n             }\n-        })\n+        });\n \n-        console.log(res.data)\n-        return res.data.success\n+        console.log(res.data);\n+        return res.data.success;\n     }catch(e){\n         return false\n     }\n }\n"
+                },
+                {
+                    "date": 1641084560758,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -125,9 +125,9 @@\n \n // respond to consultation request\n export const respondRequest = async (response, id)=>{\n     try{\n-        console.log('reach for logger')\n+        console.log('reach for logger: '+response+id)\n         let key = await AsyncStorage.getItem('_apikey')\n         let token = await AsyncStorage.getItem('_accesstoken')\n         let res = await axios.post(`${base_url}/physicians/consultations/confirm`, {\n             availability: response,\n"
+                },
+                {
+                    "date": 1641084595383,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -141,8 +141,9 @@\n \n         console.log(res.data);\n         return res.data.success;\n     }catch(e){\n+        console.log(res.response);\n         return false\n     }\n }\n \n"
+                },
+                {
+                    "date": 1641084712516,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -141,9 +141,9 @@\n \n         console.log(res.data);\n         return res.data.success;\n     }catch(e){\n-        console.log(res.response);\n+        console.log(e.response);\n         return false\n     }\n }\n \n"
+                },
+                {
+                    "date": 1641084758656,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -141,9 +141,9 @@\n \n         console.log(res.data);\n         return res.data.success;\n     }catch(e){\n-        console.log(e.response);\n+        console.log(e.response.data);\n         return false\n     }\n }\n \n"
+                },
+                {
+                    "date": 1641084888250,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -130,8 +130,9 @@\n         let key = await AsyncStorage.getItem('_apikey')\n         let token = await AsyncStorage.getItem('_accesstoken')\n         let res = await axios.post(`${base_url}/physicians/consultations/confirm`, {\n             availability: response,\n+            status: response,\n             id\n         }, {\n             headers: {\n                 'x-api-key': key,\n"
                 }
             ],
             "date": 1639063336790,

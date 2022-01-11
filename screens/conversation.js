@@ -189,7 +189,7 @@ const Conversation = ({navigation, route}) =>{
                 file_type: type,
                 sender: email,
                 symptoms: [],
-                createDate: (new Date()).toLocaleString(),
+                createDate: (new Date()).toString(),
                 timeStamp: Date.now()
             };
 

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 8,
+            "activePatchIndex": 9,
             "patches": [
                 {
                     "date": 1638947518038,
@@ -40,6 +40,10 @@
                 {
                     "date": 1638951365283,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,9 +11,9 @@\n     # to enable hermes on iOS, change `false` to `true` and then install pods\n     :hermes_enabled => false\n   )\n \n-  target 'ClarondocTests' do\n+  target 'ClarondocDoctorTests' do\n     inherit! :complete\n     # Pods for testing\n   end\n \n"
+                },
+                {
+                    "date": 1641289698911,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,8 +11,9 @@\n     # to enable hermes on iOS, change `false` to `true` and then install pods\n     :hermes_enabled => false\n   )\n \n+\n   target 'ClarondocDoctorTests' do\n     inherit! :complete\n     # Pods for testing\n   end\n@@ -24,6 +25,7 @@\n   use_flipper!()\n \n   post_install do |installer|\n     react_native_post_install(installer)\n+    # __apply_Xcode_12_5_M1_post_install_workaround(installer)\n   end\n end\n"
                 }
             ],
             "date": 1638947518038,
