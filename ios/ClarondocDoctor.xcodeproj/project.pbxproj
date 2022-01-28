@@ -511,7 +511,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 6L28Q8RXN8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ClarondocDoctor/Info.plist;
@@ -520,7 +520,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.7.4;
+				MARKETING_VERSION = 4.8.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -540,7 +540,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 6L28Q8RXN8;
 				INFOPLIST_FILE = ClarondocDoctor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -548,7 +548,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.7.4;
+				MARKETING_VERSION = 4.8.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
