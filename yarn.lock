@@ -1547,6 +1547,13 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz#e42b1bef12d2415411519fd528e64b593b1363dc"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
+"@react-native-community/push-notification-ios@^1.10.1":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.10.1.tgz#d52a6d69ac1112df0f79e1d17978077629b76784"
+  integrity sha512-k6bZWUKLif4GjenyTD3aQLwA2VT3bNmt22INO/34lexnpmqkPDZF7nreqbckTHG0Zso9wDTe4N/AZJUC/d8iRg==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-firebase/app@^12.8.0":
   version "12.9.3"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-12.9.3.tgz#7f0f8ee8598557e3d8997d5a7e820f89d2a3479d"
@@ -6675,6 +6682,11 @@ react-native-agora@^3.4.6:
   resolved "https://registry.yarnpkg.com/react-native-agora/-/react-native-agora-3.5.1.tgz#896ba32b33979a2adae7c573bef4b3638b6653bc"
   integrity sha512-c8p9pZYoB86Q1a2EY+RwvNK1yLqTyNM0XfX/rlZYpErxPAuX/MC+7/klmKSCIiY4zr+HgictPvAMl78Ym5yWsA==
 
+react-native-appstate-hook@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-appstate-hook/-/react-native-appstate-hook-1.0.6.tgz#cbc16e7b89cfaea034cabd999f00e99053cabd06"
+  integrity sha512-0hPVyf5yLxCSVrrNEuGqN1ZnSSj3Ye2gZex0NtcK/AHYwMc0rXWFNZjBKOoZSouspqu3hXBbQ6NOUSTzrME1AQ==
+
 react-native-callkeep@^4.2.0:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-native-callkeep/-/react-native-callkeep-4.3.1.tgz#62c5713318714a2432e5a0e269bf5f8fd0fc9722"
@@ -6762,6 +6774,11 @@ react-native-mmkv@^1.6.3:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/react-native-mmkv/-/react-native-mmkv-1.6.3.tgz#09987d3d6aabdce1ff6efe0973c30bca1474d154"
   integrity sha512-NZyF+psSnIOjvP0VGC6rK/UgVR6ml77MzYGyxKxucZMUZR3pIt+fyc9zat8RtAxHhLJdinNhpqXPee3MZ4Izyg==
+
+react-native-push-notification@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz#a41d20c70ea5a7709417e96261b225461f8dc73a"
+  integrity sha512-XpBtG/w+a6WXTxu6l1dNYyTiHnbgnvjoc3KxPTxYkaIABRmvuJZkFxqruyGvfCw7ELAlZEAJO+dthdTabCe1XA==
 
 react-native-ratings@8.0.4:
   version "8.0.4"

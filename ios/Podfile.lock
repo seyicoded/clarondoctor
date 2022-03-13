@@ -824,6 +824,8 @@ PODS:
     - React-Core
   - RNCClipboard (1.9.0):
     - React-Core
+  - RNCPushNotificationIOS (1.10.1):
+    - React-Core
   - RNFBApp (12.9.3):
     - Firebase/CoreOnly (= 8.8.0)
     - React-Core
@@ -915,6 +917,7 @@ DEPENDENCIES:
   - RNCallKeep (from `../node_modules/react-native-callkeep`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
+  - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
@@ -1047,6 +1050,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "../node_modules/@react-native-clipboard/clipboard"
+  RNCPushNotificationIOS:
+    :path: "../node_modules/@react-native-community/push-notification-ios"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBFirestore:
@@ -1143,6 +1148,7 @@ SPEC CHECKSUMS:
   RNCallKeep: 3ac23a8074aa4b25901a437ee4c6fcbbd7509bfd
   RNCAsyncStorage: ea6b5c280997b2b32a587793163b1f10e580c4f7
   RNCClipboard: 99fc8ad669a376b756fbc8098ae2fd05c0ed0668
+  RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
   RNFBApp: 729c0666395b1953198dc4a1ec6deb8fbe1c302e
   RNFBFirestore: eef5fd4cfbe35316af559631db06a34b8391628a
   RNFBMessaging: 8415ec196e5c1196caa26ec0742cdb48ed4d0f97
