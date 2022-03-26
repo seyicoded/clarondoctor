@@ -3,7 +3,6 @@
  */
 
 import {AppRegistry} from 'react-native';
-import {Platform} from 'react-native'
 import React, { useState, useEffect, useRef } from 'react';
 import App from './App';
 import {name as appName} from './app.json';
@@ -89,27 +88,6 @@ messaging().setBackgroundMessageHandler(async message => {
 
             console.log('ahh')
 
-            if(Platform.OS == 'ios'){
-              PushNotification.localNotificationSchedule({
-                number: 1,
-                
-                // actions: ["Open App"], // (Android only) See the doc for notification actions to know more
-                // invokeApp: true, // (optional) This enable click on actions to bring back the application to foreground or stay in background, default: true
-
-                /* iOS only properties */
-                // subtitle: "My Notification Subtitle", // (optional) smaller title below notification title
-
-                /* iOS and Android properties */
-                title: "Incoming Call", // (optional)
-                message: "Click to enter app", // (required)
-                // picture: "https://www.example.tld/picture.jpg", // (optional) Display an picture with the notification, alias of `bigPictureUrl` for Android. default: undefined
-                // userInfo: {}, // (optional) default: {} (using null throws a JSON value '<null>' error)
-                playSound: true, // (optional) default: true
-                soundName: "ring.mp3", 
-                date: new Date(Date.now() + (1 * 1000)) // in 1 secs
-              });
-            }
-
             PushNotification.localNotification({
             /* Android Only Properties */
             channelId: "12345654321", // (required) channelId, if the channel doesn't exist, notification will not trigger.
@@ -157,7 +135,7 @@ messaging().setBackgroundMessageHandler(async message => {
             picture: "https://www.example.tld/picture.jpg", // (optional) Display an picture with the notification, alias of `bigPictureUrl` for Android. default: undefined
             userInfo: {}, // (optional) default: {} (using null throws a JSON value '<null>' error)
             playSound: true, // (optional) default: true
-            soundName: "ring.mp3", // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
+            soundName: "default", // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
             number: 1, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
             // repeatType: "day", // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
             });
@@ -165,6 +143,12 @@ messaging().setBackgroundMessageHandler(async message => {
             console.log(e)
         }
     }
+});
+
+PushNotification.localNotificationSchedule({
+  message: "My Schedule Notification Message", // (required)
+  number: 1,
+  date: new Date(Date.now() + (7 * 1000)) // in 3 secs
 });
 
 // messaging().setBackgroundMessageHandler(async message => {

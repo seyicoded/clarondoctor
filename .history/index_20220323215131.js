@@ -3,7 +3,6 @@
  */
 
 import {AppRegistry} from 'react-native';
-import {Platform} from 'react-native'
 import React, { useState, useEffect, useRef } from 'react';
 import App from './App';
 import {name as appName} from './app.json';
@@ -15,9 +14,6 @@ import useAppState from 'react-native-appstate-hook'
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import PushNotification, {Importance} from "react-native-push-notification";
 
-try{
-  messaging().requestPermission();
-}catch(e){}
 // Must be outside of any component LifeCycle (such as `componentDidMount`).
 PushNotification.configure({
   // (optional) Called when Token is generated (iOS and Android)
@@ -72,7 +68,6 @@ PushNotification.configure({
 messaging().setBackgroundMessageHandler(async message => {
     console.log('Message handled in the background!', message);
     if(message.data.hasOwnProperty('call')){
-        console.log('....... call reached')
         try{
             PushNotification.createChannel(
                 {
@@ -86,29 +81,6 @@ messaging().setBackgroundMessageHandler(async message => {
                 },
                 (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
             );
-
-            console.log('ahh')
-
-            if(Platform.OS == 'ios'){
-              PushNotification.localNotificationSchedule({
-                number: 1,
-                
-                // actions: ["Open App"], // (Android only) See the doc for notification actions to know more
-                // invokeApp: true, // (optional) This enable click on actions to bring back the application to foreground or stay in background, default: true
-
-                /* iOS only properties */
-                // subtitle: "My Notification Subtitle", // (optional) smaller title below notification title
-
-                /* iOS and Android properties */
-                title: "Incoming Call", // (optional)
-                message: "Click to enter app", // (required)
-                // picture: "https://www.example.tld/picture.jpg", // (optional) Display an picture with the notification, alias of `bigPictureUrl` for Android. default: undefined
-                // userInfo: {}, // (optional) default: {} (using null throws a JSON value '<null>' error)
-                playSound: true, // (optional) default: true
-                soundName: "ring.mp3", 
-                date: new Date(Date.now() + (1 * 1000)) // in 1 secs
-              });
-            }
 
             PushNotification.localNotification({
             /* Android Only Properties */
@@ -157,9 +129,9 @@ messaging().setBackgroundMessageHandler(async message => {
             picture: "https://www.example.tld/picture.jpg", // (optional) Display an picture with the notification, alias of `bigPictureUrl` for Android. default: undefined
             userInfo: {}, // (optional) default: {} (using null throws a JSON value '<null>' error)
             playSound: true, // (optional) default: true
-            soundName: "ring.mp3", // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
-            number: 1, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
-            // repeatType: "day", // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
+            soundName: "default", // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
+            number: 10, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
+            repeatType: "day", // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
             });
         }catch(e){
             console.log(e)
