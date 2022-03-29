@@ -209,33 +209,33 @@ const VideoCall = ({navigation, route}) => {
         let data = snapshot.data();
         if(data.token != undefined){
           // send the axois request
-          axios.post('https://fcm.googleapis.com/fcm/send', {
-            "to": data.token,
-            "data": {
-                "body": "call request",
-                "title": "call request",
-                "name": "hellworld",
-                "call": {
-                    "name": doctor_email,
-                    "time": new Date(),
-                    "patient": patient_email,
-                    "doctor": doctor_email,
-                    "caller": `${user.firstname} ${user.lastname}`,
-                    "status": 'started',
-                    "end_now": 'false',
-                    "channel": res.data.RTCChannel,
-                    "token": res.data.RTCAccessToken
-                }
-            },
-            "content_available": true,
-            "priority": "high"
-          }, {
-            headers: {
-              Authorization : `key=AAAAEfHKSRA:APA91bH2lfkOJ8bZUGvMJo7cqdLYqk1m633KK7eu5pEaUF0J1ieFgpcWtYItCRftxVLSghEOZY5cQ8k9XfB_PVyfQeDHiC5ifuowqYUytsF0Nby4ANcZhVcFj6E0u5df2c4LItkjq4H2`
-            }
-          }).then((res)=>{
-            console.log(res.data)
-          })
+          // axios.post('https://fcm.googleapis.com/fcm/send', {
+          //   "to": data.token,
+          //   "data": {
+          //       "body": "call request",
+          //       "title": "call request",
+          //       "name": "hellworld",
+          //       "call": {
+          //           "name": doctor_email,
+          //           "time": new Date(),
+          //           "patient": patient_email,
+          //           "doctor": doctor_email,
+          //           "caller": `${user.firstname} ${user.lastname}`,
+          //           "status": 'started',
+          //           "end_now": 'false',
+          //           "channel": res.data.RTCChannel,
+          //           "token": res.data.RTCAccessToken
+          //       }
+          //   },
+          //   "content_available": true,
+          //   "priority": "high"
+          // }, {
+          //   headers: {
+          //     Authorization : `key=AAAAEfHKSRA:APA91bH2lfkOJ8bZUGvMJo7cqdLYqk1m633KK7eu5pEaUF0J1ieFgpcWtYItCRftxVLSghEOZY5cQ8k9XfB_PVyfQeDHiC5ifuowqYUytsF0Nby4ANcZhVcFj6E0u5df2c4LItkjq4H2`
+          //   }
+          // }).then((res)=>{
+          //   console.log(res.data)
+          // })
 
           axios.post('https://fcm.googleapis.com/fcm/send', {
             "to": data.token,
