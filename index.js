@@ -4,7 +4,9 @@
 
 import {AppRegistry} from 'react-native';
 import {Platform} from 'react-native'
-import React, { useState, useEffect, useRef } from 'react';
+// import React from 'react'
+import * as React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import App from './App';
 import {name as appName} from './app.json';
 import RNCallKeep from 'react-native-callkeep';

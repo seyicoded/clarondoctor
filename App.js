@@ -1,4 +1,5 @@
-import React, {useEffect} from 'react';
+import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {ActivityIndicator, View} from 'react-native';
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
@@ -57,9 +58,9 @@ const { Navigator, Screen } = createStackNavigator();
 
 const App = () => {
   
-  const [theme, setTheme] = React.useState(useColorScheme());
-  const [logged, setlogged] = React.useState(false)
-  const [loading, setloading] = React.useState(true)
+  const [theme, setTheme] = useState(useColorScheme());
+  const [logged, setlogged] = useState(false)
+  const [loading, setloading] = useState(true)
 
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
@@ -161,6 +162,11 @@ const App = () => {
       
     })()
   }, [])
+
+  // React.useEffect(()=>{
+  //   console.log('aa');
+  // }, []);
+  // return <View style={{backgroundColor: 'red', flex: 1}}></View>;
 
   if(loading){
     return (
