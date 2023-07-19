@@ -26,6 +26,7 @@ import VideoCall from './screens/calls/video';
 import Account from './screens/account';
 import firebase from 'firebase'
 import CodePush from 'react-native-code-push'
+import { updateUserInfoToFirebase } from './function/firebase';
 
 // let codePushOptions = { checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME, installMode: CodePush.InstallMode.IMMEDIATE };
 let codePushOptions = { checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
@@ -138,6 +139,13 @@ const App = () => {
     }
   };
 
+  const getUserAndUpdate = async ()=>{
+    const user = await AsyncStorage.getItem('user');
+
+    console.log('doctorDetail', user);
+    await updateUserInfoToFirebase(user);
+  }
+
   useEffect(() => {
 
     // registerForPushNotificationsAsync()
@@ -159,6 +167,7 @@ const App = () => {
       }
       setloading(false)
       await registerForPushNotificationsAsync()
+      getUserAndUpdate();
       
     })()
   }, [])
