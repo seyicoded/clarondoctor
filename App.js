@@ -140,7 +140,13 @@ const App = () => {
   };
 
   const getUserAndUpdate = async ()=>{
-    const user = await AsyncStorage.getItem('user');
+    let user = await AsyncStorage.getItem('user');
+
+    if(!user){
+      return ;
+    }
+
+    user = JSON.parse(user);
 
     console.log('doctorDetail', user);
     await updateUserInfoToFirebase(user);

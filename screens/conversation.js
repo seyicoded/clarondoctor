@@ -44,6 +44,25 @@ const Conversation = ({navigation, route}) =>{
 
     const emailR = useRef(null);
 
+    useEffect(()=>{
+        (async()=>{
+          if(conversation.length != 0){
+            let email = await AsyncStorage.getItem('_email');
+    
+    
+          // send to firebase
+          await firebase
+            .firestore()
+            .collection('newSMessages')
+            .doc(chat_code(route.params.user, email))
+            .set({
+              active: 'yes',
+              link: chat_code(route.params.user, email)
+            }, {merge: true});
+          }
+        })()
+      }, [conversation])
+
     // console.log(emailR.current)
 
     const SendIcon = (props)=>{
