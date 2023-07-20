@@ -217,6 +217,14 @@ const Conversation = ({navigation, route}) =>{
 
             await firebase.firestore().collection('newSMessages').doc(chat_code(route.params.user, email)).collection('messages').add(sen);
 
+            await firebase
+            .firestore()
+            .collection('newSMessages')
+            .doc(chat_code(route.params.user, email))
+            .set({
+              update: (new Date()).getTime()
+            }, {merge: true});
+
             if(true){
                 setmessage('')
                 setattachment(null)
