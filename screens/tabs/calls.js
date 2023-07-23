@@ -32,6 +32,7 @@ const Calls = ({navigation}) =>{
     try{
       setloading(true)
       let requests = await API.getSchedule()
+      console.log(requests, "requestsrequests");
       setrequests(requests)
       
       let days = []
