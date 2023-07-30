@@ -15,6 +15,7 @@
 		294B13B227EEAB2600909EA6 /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 294B13B027EEAB2600909EA6 /* ring.mp3 */; };
 		33DCDA0A485ED8A41598BCBE /* libPods-ClarondocDoctor-ClarondocDoctorTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EB1A263868B5E44B31B837B /* libPods-ClarondocDoctor-ClarondocDoctorTests.a */; };
 		5A1BE3B4BD8C8A9F6430C48A /* libPods-ClarondocDoctor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B3AA46D2C4E0A38C812E730 /* libPods-ClarondocDoctor.a */; };
+		60277CDE2A75E5E200AE88CC /* dialtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 60277CDD2A75E5E100AE88CC /* dialtone.mp3 */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		29B8DE8527B5E2B6007E507D /* ClarondocDoctor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ClarondocDoctor.entitlements; path = ClarondocDoctor/ClarondocDoctor.entitlements; sourceTree = "<group>"; };
 		2F5CC8311BB5D9E93E19BEB6 /* Pods-ClarondocDoctor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarondocDoctor.debug.xcconfig"; path = "Target Support Files/Pods-ClarondocDoctor/Pods-ClarondocDoctor.debug.xcconfig"; sourceTree = "<group>"; };
 		5DC78173D01EC5D5E444DCED /* Pods-ClarondocDoctor-ClarondocDoctorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarondocDoctor-ClarondocDoctorTests.debug.xcconfig"; path = "Target Support Files/Pods-ClarondocDoctor-ClarondocDoctorTests/Pods-ClarondocDoctor-ClarondocDoctorTests.debug.xcconfig"; sourceTree = "<group>"; };
+		60277CDD2A75E5E100AE88CC /* dialtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dialtone.mp3; sourceTree = "<group>"; };
 		6EB1A263868B5E44B31B837B /* libPods-ClarondocDoctor-ClarondocDoctorTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClarondocDoctor-ClarondocDoctorTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ClarondocDoctor/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B3AA46D2C4E0A38C812E730 /* libPods-ClarondocDoctor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClarondocDoctor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				29B8DE8527B5E2B6007E507D /* ClarondocDoctor.entitlements */,
+				60277CDD2A75E5E100AE88CC /* dialtone.mp3 */,
 				2942B918278C5EFC00A844E9 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -263,6 +266,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				294B13B227EEAB2600909EA6 /* ring.mp3 in Resources */,
 				2942B91E278C5F8900A844E9 /* GoogleService-Info.plist in Resources */,
+				60277CDE2A75E5E200AE88CC /* dialtone.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -154,12 +154,13 @@ const Calls = ({navigation}) =>{
             </View>)
           }
           { selected.length > 0 ?
-          <FlatList
-            data={selected}
-            keyExtractor={item=>item.id}
-            renderItem={({item})=>{
-              return <Reuse.call respond={respond} request={item} nav={navigation} />
-            }}/>
+          // <FlatList
+          //   data={selected}
+          //   keyExtractor={item=>item.id}
+          //   renderItem={({item})=>{
+          //     return <Reuse.call respond={respond} request={item} nav={navigation} />
+          //   }}/>
+          (selected.map(item => <Reuse.call respond={respond} request={item} nav={navigation} />))
             :
             <Text category={'s1'} style={{margin: 15, textAlign: 'center'}}>No scheduled consultations for selected date</Text>
           }

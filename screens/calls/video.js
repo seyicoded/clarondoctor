@@ -22,6 +22,13 @@ import RtcEngine, {
 } from 'react-native-agora';
 import firebase from 'firebase';
 
+var Sound = require('react-native-sound');
+
+try{
+  (Platform.OS == 'android' && Sound.setCategory('Playback'));
+}catch(e){}
+
+
 const SpeakerIcon = (props)=><Icon {...props} name="volume-up-outline"/>
 const EndIcon = (props)=><Icon {...props} name="close-outline"/>
 const MuteIcon = (props)=><Icon {...props} name="mic-off-outline"/>
@@ -37,10 +44,40 @@ const VideoCall = ({navigation, route}) => {
   const [muted, setmuted] = useState(false)
   const [video, setvideo] = useState(true)
   const [speaker, setspeaker] = useState(false)
+  const [sound, setSound] = useState(null)
   const [remoteid, setremoteid] = useState()
   let _engine
 
   // console.log(remoteid)
+
+  useEffect(()=>{
+    var whoosh = new Sound('dialtone.mp3', Sound.MAIN_BUNDLE, (error)=>{
+      if(error){
+        console.log('failed to load the sound', error);
+        return ;
+      }
+
+      setSound(whoosh);
+      whoosh.setNumberOfLoops(-1)
+      whoosh.setVolume(1)
+
+      setTimeout(()=>{
+        whoosh.play();
+      }, 1000)
+    });
+
+    return ()=>{
+      whoosh.stop();
+      whoosh.release();
+    }
+  }, [])
+
+  useEffect(()=>{
+    if(remoteid != null){
+      sound.stop();
+      sound.release();
+    }
+  }, [remoteid])
 
   const _init = async (channel, token) => {
     _engine = await RtcEngine.createWithContext(
