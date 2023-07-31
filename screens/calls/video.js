@@ -92,7 +92,9 @@ const VideoCall = ({navigation, route}) => {
     await _engine.enableVideo()
     await _engine.startPreview()
     await _engine.enableLocalVideo(true)
+    await _engine.setEnableSpeakerphone(false)
     await _engine.startPreview()
+    await _engine.enableLocalAudio(true)
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting)
     await _engine.setClientRole(ClientRole.Broadcaster)
     try{
@@ -363,7 +365,7 @@ const VideoCall = ({navigation, route}) => {
         }
         <View style={{position: 'absolute', bottom: 35, left: 15, right: 15, alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row'}}>
           <Button onPress={_switchCamera} status={'basic'} style={{height: 65, width: 65, borderRadius: 65}} accessoryLeft={VideoIcon} appearance={video ? 'filled' : 'outline'}></Button>
-          <Button onPress={_switchMicrophone} status={'basic'} style={{height: 65, width: 65, borderRadius: 65}} accessoryLeft={MuteIcon} appearance={!muted ? 'filled' : 'outline'}></Button>
+          <Button onPress={_switchMicrophone} status={'basic'} style={{height: 65, width: 65, borderRadius: 65}} accessoryLeft={MuteIcon} appearance={muted ? 'filled' : 'outline'}></Button>
           <Button onPress={_leaveChannel} status={'danger'} style={{height: 75, width: 75, borderRadius: 75}} accessoryLeft={EndIcon} appearance={'filled'}></Button>
           <Button onPress={_switchSpeakerphone} status={'basic'} style={{height: 65, width: 65, borderRadius: 65}} accessoryLeft={SpeakerIcon} appearance={speaker ? 'filled' : 'outline'}></Button>
         </View>
