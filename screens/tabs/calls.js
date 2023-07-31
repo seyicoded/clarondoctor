@@ -4,6 +4,7 @@ import * as API from '../../api'
 import { Icon, Calendar, Layout, Text, Button, Modal, Card, Input, Divider } from '@ui-kitten/components';
 import { FlatList, ScrollView, StyleSheet, Dimensions, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as AsyncStorage from '../../AsyncStorageCustom'
 
 const CallIcon = (props)=><Icon {...props} name="phone-call-outline"/>
 
@@ -18,6 +19,14 @@ const Calls = ({navigation}) =>{
   const [users, setusers] = useState([])
   const [newcall, setnewcall] = useState(false)
   const [loading, setloading] = useState(false)
+  const [doctor_email, setDoctorEmail] = useState("")
+
+  useEffect(()=>{
+    (async()=>{
+      let email = await AsyncStorage.getItem('_email');
+      setDoctorEmail(email);
+    })()
+  }, [])
 
   const DayCell = ( {date}, style) => (
     <View
@@ -121,7 +130,12 @@ const Calls = ({navigation}) =>{
               style={{maxHeight: 200, marginVertical: 10}}
               keyExtractor={item=>item.email}
               renderItem={({item})=>{
-                return <TouchableOpacity onPress={()=>{setnewcall(false); navigation.navigate('Urgent', {user: item})}}>
+                return <TouchableOpacity onPress={()=>{
+                    setnewcall(false);
+                    // navigation.navigate('Urgent', {user: item});
+                    const patient_email = (item.email);
+                    navigation.navigate('VideoCall', {doctor_email: doctor_email, patient_email: patient_email})
+                  }}>
                   <View style={{marginVertical: 5}}>
                     <Text>{item.firstname} {item.lastname}</Text>
                     <Text appearance={'hint'} category={'c2'}>{item.email} &middot; {item.phone}</Text>
