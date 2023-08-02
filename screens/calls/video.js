@@ -21,6 +21,7 @@ import RtcEngine, {
   RtcRemoteView
 } from 'react-native-agora';
 import firebase from 'firebase';
+import analytics from '@react-native-firebase/analytics';
 
 var Sound = require('react-native-sound');
 
@@ -308,7 +309,16 @@ const VideoCall = ({navigation, route}) => {
               Authorization : `key=AAAAEfHKSRA:APA91bH2lfkOJ8bZUGvMJo7cqdLYqk1m633KK7eu5pEaUF0J1ieFgpcWtYItCRftxVLSghEOZY5cQ8k9XfB_PVyfQeDHiC5ifuowqYUytsF0Nby4ANcZhVcFj6E0u5df2c4LItkjq4H2`
             }
           }).then((res)=>{
-            console.log(res.data)
+            console.log(res.data);
+
+            analytics().logEvent('normal_call', {
+              caller_doctor: doctor_email,
+              recipient_patient: patient_email,
+              name: 'Normal Call',
+              time: new Date(),
+              status: 'started'
+            });
+
           })
         }
         // if(snapshot.docs.length > 0){

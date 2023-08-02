@@ -12,6 +12,7 @@ import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
 import { BottomNavigation, BottomNavigationTab, Icon, Button, Layout, Divider, Toggle } from '@ui-kitten/components';
 import * as API from '../api';
+import analytics from '@react-native-firebase/analytics';
 
 import useAppState from 'react-native-appstate-hook'
 
@@ -151,9 +152,19 @@ export const MainScreen = ({navigation}) =>{
                 // }
                 // Do your normal `Answering` actions here.
                 // RNCallKeep.startCall(urgent.channel, 'Urgent Care', localizedCallerName = 'Urgent Care', handleType = 'generic')
-                RNCallKeep.endAllCalls()
-                console.log('rnck: call')
-                navigation.navigate('Urgent', {channel: urgent.channel, token: urgent.token, email: email})
+                RNCallKeep.backToForeground();
+                RNCallKeep.endAllCalls();
+                console.log('rnck: call');
+                navigation.navigate('Urgent', {channel: urgent.channel, token: urgent.token, email: email});
+
+                analytics().logEvent('urgent_call', {
+                    caller: email,
+                    recipient: email,
+                    data: urgent,
+                    name: 'Urgent Call',
+                    time: new Date(),
+                    status: 'answered'
+                })
             });
 
             RNCallKeep.addEventListener('endCall', async ({ callUUID }) => {
