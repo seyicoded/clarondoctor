@@ -5,6 +5,7 @@ import { Icon, Calendar, Layout, Text, Button, Modal, Card, Input, Divider } fro
 import { FlatList, ScrollView, StyleSheet, Dimensions, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AsyncStorage from '../../AsyncStorageCustom'
+import analytics from '@react-native-firebase/analytics';
 
 const CallIcon = (props)=><Icon {...props} name="phone-call-outline"/>
 
@@ -84,8 +85,8 @@ const Calls = ({navigation}) =>{
   }
 
   const search = (text)=>{
-    setquery(text)
     try {
+      setquery(text);
       setfilteredusers(users.filter(user=>
           user?.firstname?.toLowerCase().includes(text.toLowerCase()) ||
           user?.lastname?.toLowerCase().includes(text.toLowerCase()) ||
@@ -95,7 +96,10 @@ const Calls = ({navigation}) =>{
       );
       
     } catch (error) {
-      
+      analytics().logEvent('ios_crash_log', {
+        crash: error.message,
+        crashData: error.toString(),
+    })
     }
   }
 
@@ -133,7 +137,7 @@ const Calls = ({navigation}) =>{
             <FlatList
               data={filteredusers}
               style={{maxHeight: 200, marginVertical: 10}}
-              keyExtractor={item=>item.email}
+              // keyExtractor={item=>item?.email}
               renderItem={({item})=>{
                 return <TouchableOpacity onPress={()=>{
                     setnewcall(false);

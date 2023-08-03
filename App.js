@@ -54,7 +54,7 @@ firebase.apps.length == 0 ? firebase.initializeApp({
 
 firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true });
 
-LogBox.ignoreAllLogs()
+// LogBox.ignoreAllLogs()
 const { Navigator, Screen } = createStackNavigator();
 
 const App = () => {
