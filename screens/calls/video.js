@@ -349,6 +349,27 @@ const VideoCall = ({navigation, route}) => {
     }
   }, [])
 
+
+  // end call once doctor leaves
+  useEffect(()=>{
+    return ()=>{
+      (async()=>{
+        try{
+          const user = JSON.parse(await AsyncStorage.getItem('user'));
+        
+          await firebase.firestore().collection('normal_calls').doc(patient_email).update({data: {
+            time: new Date(),
+            patient: patient_email,
+            doctor: doctor_email,
+            caller: `${user.firstname} ${user.lastname}`,
+            status: 'ended',
+            end_now: 'true'
+          }});
+        }catch(e){}
+      })()
+    }
+  }, [])
+
   return (
     <Layout style={{flex: 1}}>
       <SafeAreaView style={{flex: 1}}>
@@ -375,7 +396,7 @@ const VideoCall = ({navigation, route}) => {
         }
         <View style={{position: 'absolute', bottom: 35, left: 15, right: 15, alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row'}}>
           <Button onPress={_switchCamera} status={'basic'} style={{height: 65, width: 65, borderRadius: 65}} accessoryLeft={VideoIcon} appearance={video ? 'filled' : 'outline'}></Button>
-          <Button onPress={_switchMicrophone} status={'basic'} style={{height: 65, width: 65, borderRadius: 65}} accessoryLeft={MuteIcon} appearance={muted ? 'filled' : 'outline'}></Button>
+          <Button onPress={_switchMicrophone} status={'basic'} style={{height: 65, width: 65, borderRadius: 65}} accessoryLeft={MuteIcon} appearance={!muted ? 'filled' : 'outline'}></Button>
           <Button onPress={_leaveChannel} status={'danger'} style={{height: 75, width: 75, borderRadius: 75}} accessoryLeft={EndIcon} appearance={'filled'}></Button>
           <Button onPress={_switchSpeakerphone} status={'basic'} style={{height: 65, width: 65, borderRadius: 65}} accessoryLeft={SpeakerIcon} appearance={speaker ? 'filled' : 'outline'}></Button>
         </View>

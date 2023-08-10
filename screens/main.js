@@ -15,6 +15,9 @@ import * as API from '../api';
 import analytics from '@react-native-firebase/analytics';
 
 import useAppState from 'react-native-appstate-hook'
+import PushNotification from "react-native-push-notification";
+
+PushNotification.setApplicationIconBadgeNumber(0);
 
 const call_options = {
     ios: {
@@ -306,7 +309,7 @@ export const MainScreen = ({navigation}) =>{
             
             let email = await AsyncStorage.getItem('_email')
             if(email == undefined){
-                email = 'opadonuseyi01@gmail.com';
+                email = 'tester@gmail.com';
             }else{
 
             }

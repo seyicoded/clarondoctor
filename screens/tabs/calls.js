@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as Reuse from '../../components/reusables'
 import * as API from '../../api'
 import { Icon, Calendar, Layout, Text, Button, Modal, Card, Input, Divider } from '@ui-kitten/components';
-import { FlatList, ScrollView, StyleSheet, Dimensions, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Dimensions, View, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AsyncStorage from '../../AsyncStorageCustom'
 import analytics from '@react-native-firebase/analytics';
@@ -133,7 +133,15 @@ const Calls = ({navigation}) =>{
           <Card style={{width: Dimensions.get('screen').width-50}} disabled={true}>
             <Text category={'h6'} style={{margin: 10, textAlign: 'center'}}>Make Urgent Call to Patient</Text>
             
-            <Input autoCapitalize={'none'} placeholder={'Search for patient...'} value={query} onChangeText={search}/>
+            {/* <Input autoCapitalize={'none'} placeholder={'Search for patient...'} value={query} onChangeText={search}/> */}
+            <TextInput autoCapitalize={'none'} placeholder={'Search for patient...'} value={query} onChangeText={search}
+              style={{ 
+              paddingHorizontal: 12,
+              paddingVertical: 12,
+              borderColor: 'grey',
+              borderWidth: 1,
+              borderRadius: 4
+             }}/>
             <FlatList
               data={filteredusers}
               style={{maxHeight: 200, marginVertical: 10}}

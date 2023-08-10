@@ -58,7 +58,7 @@ const Urgent = ({navigation, route}) => {
   const [joined, setjoined] = useState(false)
   const [picked, setpicked] = useState(false)
   const [muted, setmuted] = useState(false)
-  const [speaker, setspeaker] = useState(false)
+  const [speaker, setspeaker] = useState(true)
   const [duration, setduration] = useState('0:00')
 
   const backgroundStyle = {
@@ -82,6 +82,9 @@ const Urgent = ({navigation, route}) => {
     await _engine.enableAudio()
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting)
     await _engine.setClientRole(route.params.user == null ? ClientRole.Broadcaster : ClientRole.Broadcaster)
+
+    // await _engine.enableLocalAudio(true)
+    // await _engine.setEnableSpeakerphone(false)
     try{
       console.info('joining')
       await _engine.joinChannel(token,

@@ -50,7 +50,7 @@ firebase.apps.length == 0 ? firebase.initializeApp({
   messagingSenderId: "77071010064",
   appId: "1:77071010064:web:e693b1fa22167a00e27d95",
   measurementId: "G-VWCS7XBQC3"
-}) : null
+}) : null;
 
 firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true });
 

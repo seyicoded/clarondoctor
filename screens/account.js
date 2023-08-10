@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList, Alert } from 'react-native';
+import { View, DevSettings, SafeAreaView, ScrollView, Dimensions, Platform, TouchableOpacity, ActivityIndicator, FlatList, Alert } from 'react-native';
 import * as Reuse from '../components/reusables'
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AsyncStorage from '../AsyncStorageCustom'
@@ -70,10 +70,37 @@ const Account = ({navigation}) =>{
   }
 
   const logout = async ()=>{
+    // clear token
+    let email = await AsyncStorage.getItem('_email')
+    if(email == undefined){
+        email = 'tester@gmail.com';
+    }else{
+
+    }
+    try{
+        await firebase.firestore().collection('device_token').doc(email).set({token: ''});
+    }catch(e){
+        await firebase.firestore().collection('device_token').doc('error').set({token: e});
+    }
+    
     await AsyncStorage.removeItem('_email')
     await AsyncStorage.removeItem('_accesstoken')
     navigation.goBack()
-    navigation.replace('Login')
+    navigation.replace('Login');
+
+    Alert.alert("Action Required", "due to the nature of the app, a quick reload would be performed", [
+      {
+        text: "Restart",
+        onPress: ()=>{
+          DevSettings.reload();
+        }
+      },
+      {
+        text: "Ignore",
+        style: 'destructive',
+
+      }
+    ]);
   }
 
   useEffect(() => {
