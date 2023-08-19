@@ -54,11 +54,13 @@ const Chats = ({navigation}) =>{
 
   const search = (text)=>{
     setquery(text)
-    setfilteredusers(users.filter(user=>
-        user.firstname.toLowerCase().includes(text.toLowerCase()) ||
-        user.lastname.toLowerCase().includes(text.toLowerCase()) ||
-        user.phone.toLowerCase().includes(text.toLowerCase()) ||
-        user.email.toLowerCase().includes(text.toLowerCase())
+    setfilteredusers(users.filter(user=>{
+        return (user?.firstname?.toLowerCase()?.includes(text?.toLowerCase()) ||
+        user?.lastname?.toLowerCase()?.includes(text.toLowerCase()) ||
+        (user?.firstname + ' ' + user?.lastname)?.toLowerCase()?.includes(text.toLowerCase()) ||
+        user?.phone?.toLowerCase()?.includes(text.toLowerCase()) ||
+        user?.email?.toLowerCase()?.includes(text.toLowerCase()))
+      }
       )
     )
   }

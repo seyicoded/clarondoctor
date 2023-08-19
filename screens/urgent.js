@@ -203,7 +203,9 @@ const Urgent = ({navigation, route}) => {
     }catch(e){
       console.log('Leave error: ', e)
     }
-    navigation.goBack()
+    try{
+      navigation?.goBack();
+    }catch(e){}
   }
 
   const _switchMicrophone = () => {

@@ -138,7 +138,7 @@ const VideoCall = ({navigation, route}) => {
       console.info('LeaveChannel', stats)
       setjoined(false)
       try{
-        navigation.goBack()
+        navigation?.goBack()
       }catch(e){
 
       }
@@ -154,7 +154,7 @@ const VideoCall = ({navigation, route}) => {
       console.info('UserOffline', uid, reason);
       setremoteid(null)
       try{
-        navigation.goBack()
+        navigation?.goBack()
       }catch(e){
 
       }
@@ -189,7 +189,9 @@ const VideoCall = ({navigation, route}) => {
     }catch(e){
       console.log('Leave Error: ', e)
     }
-    navigation.goBack()
+    try{
+      navigation?.goBack();
+    }catch(e){}
   }
 
   const _switchCamera =async()=>{

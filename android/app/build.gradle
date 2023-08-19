@@ -131,7 +131,7 @@ android {
         applicationId "com.claron.doctor"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
+        versionCode 17
         versionName '12.4'
     }
     splits {
