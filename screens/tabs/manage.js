@@ -328,17 +328,17 @@ const Manage = () =>{
           <Button appearance={'outline'} onPress={()=>setrequestlab(true)} style={{marginHorizontal: 15, marginVertical: 10}}>Request Lab Test</Button>
           <Button appearance={'outline'} onPress={()=>setprescribe(true)} style={{marginHorizontal: 15}}>Prescribe Drugs</Button>
 
-          <Card style={{margin: 10}}>
+          {/* <Card style={{margin: 10}}>
             <Text style={{alignSelf: 'center'}}>Wallet Balance</Text>
             <Text style={{alignSelf: 'center', marginTop: 10}} category={'h4'}>GHS {wallet.toFixed(2)}</Text>
             <Text style={{alignSelf: 'center', marginBottom: 10}} appearance={'hint'} category={'c1'}>Last cashout Apr 19, 2021</Text>
             { wallet > 100 ?
               <Button appearance={'outline'}>Withdraw Funds</Button> : <></>
             }
-          </Card>
+          </Card> */}
 
-          <Text style={{margin: 10}} category='h6'>Earnings Overview</Text>
-          <BarChart
+          {/* <Text style={{margin: 10}} category='h6'>Earnings Overview</Text> */}
+          {/* <BarChart
             data={{
               labels: months.slice(new Date().getMonth() > 6 ? new Date().getMonth()%6 : 0, new Date().getMonth()),
               datasets: [
@@ -371,7 +371,9 @@ const Manage = () =>{
               marginVertical: 8,
               marginStart: -15
             }}
-          />
+          /> */}
+
+          <Text style={{margin: 15}} category='h6'>&nbsp;</Text>
 
           <Text style={{margin: 10}} category='h6'>Bookings Overview</Text>
           <BarChart

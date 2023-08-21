@@ -237,7 +237,23 @@ export const MainScreen = ({navigation}) =>{
                     }
                 }
 
-                console.log(message)
+                console.log(message, "messagemessagemessage");
+                if (message.notification.title == "Consultation Booking Request" ) {
+                    try {
+                      
+                      Alert.alert(message.notification.title, message.notification.body, [
+                        {
+                          text: 'Dismiss',
+                          style: 'cancel',
+                          onPress: () => {},
+                        },
+                      ]);
+                      return;
+                    } catch (e) {
+                      console.log('display incoming call error: ', e);
+                      return;
+                    }
+                }
 
                 Alert.alert(message.notification.title, message.notification.body, [
                 {

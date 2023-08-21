@@ -42,9 +42,9 @@ const VideoCall = ({navigation, route}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [joined, setjoined] = useState(false)
   const [engine, setengine] = useState()
-  const [muted, setmuted] = useState(false)
+  const [muted, setmuted] = useState(true)
   const [video, setvideo] = useState(true)
-  const [speaker, setspeaker] = useState(false)
+  const [speaker, setspeaker] = useState(true)
   const [sound, setSound] = useState(null)
   const [remoteid, setremoteid] = useState()
   let _engine
@@ -93,11 +93,11 @@ const VideoCall = ({navigation, route}) => {
     await _engine.enableVideo()
     await _engine.startPreview()
     await _engine.enableLocalVideo(true)
-    await _engine.setEnableSpeakerphone(false)
     await _engine.startPreview()
     await _engine.enableLocalAudio(true)
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting)
     await _engine.setClientRole(ClientRole.Broadcaster)
+    await _engine.setEnableSpeakerphone(true);
     try{
       // await _engine.joinChannel('006a90dea913c844cd7bcada446242c6150IAA0Kk/v+DSMEdW7apteZTf19Fz2BUqa3+nMAj7HeO9KYwO7xC0AAAAAEACLgpZh2C8vYQEAAQDVLy9h',
       // 'urgent', null, 0)
